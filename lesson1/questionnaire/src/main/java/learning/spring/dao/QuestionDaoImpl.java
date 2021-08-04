@@ -13,7 +13,7 @@ import static learning.spring.helpers.ResourceFileReader.*;
 
 @Slf4j
 public class QuestionDaoImpl implements QuestionDao {
-    public List<learning.spring.domain.Question> questionList = new ArrayList<>();
+    private List<learning.spring.domain.Question> questionList = new ArrayList<>();
     private String location;
 
     public QuestionDaoImpl(String location){
