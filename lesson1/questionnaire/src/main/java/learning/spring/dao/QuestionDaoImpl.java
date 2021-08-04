@@ -14,10 +14,10 @@ import static learning.spring.helpers.ResourceFileReader.*;
 @Slf4j
 public class QuestionDaoImpl implements QuestionDao {
     private List<learning.spring.domain.Question> questionList = new ArrayList<>();
-    private String location;
+    private final String LOCATION;
 
     public QuestionDaoImpl(String location){
-        this.location = location;
+        this.LOCATION = location;
         fillQuestionList();
     }
 
@@ -28,7 +28,7 @@ public class QuestionDaoImpl implements QuestionDao {
     private void fillQuestionList(){
         List<String> stringList;
         try{
-            String resourceString = getResourceFileAsString(location);
+            String resourceString = getResourceFileAsString(LOCATION);
             stringList = getStringList(resourceString);
             for (String s: stringList) {
                 questionList.add(getQuestion(s));
@@ -39,11 +39,7 @@ public class QuestionDaoImpl implements QuestionDao {
         }
     }
 
-    public void setLocation(String location) {
-        this.location=location;
-    }
-
     public String getLocation(){
-        return this.location;
+        return this.LOCATION;
     }
 }
