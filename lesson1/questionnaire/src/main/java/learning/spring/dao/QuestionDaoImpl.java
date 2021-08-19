@@ -1,5 +1,6 @@
 package learning.spring.dao;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,33 +14,35 @@ import static learning.spring.helpers.ResourceFileReader.*;
 
 @Slf4j
 public class QuestionDaoImpl implements QuestionDao {
-    private List<learning.spring.domain.Question> questionList = new ArrayList<>();
-    private final String LOCATION;
+    private final List<Question> questionList;
+    private final String location;
 
     public QuestionDaoImpl(String location){
-        this.LOCATION = location;
-        fillQuestionList();
+        this.location = location;
+        questionList = new ArrayList<>();
+        try {
+            fillQuestionList();
+        }
+        catch (FileNotFoundException e){
+            log.error("File not found {}", e.getMessage());
+        }
     }
 
-    public List<Question> getData(){
+    public List<Question> getAll(){
         return questionList;
     }
 
-    private void fillQuestionList(){
+    private void fillQuestionList() throws FileNotFoundException {
         List<String> stringList;
         try{
-            String resourceString = getResourceFileAsString(LOCATION);
+            String resourceString = getResourceFileAsString(location);
             stringList = getStringList(resourceString);
             for (String s: stringList) {
                 questionList.add(getQuestion(s));
             }
         }
-        catch (IOException e){
-            log.error(e.getMessage());
+        catch (Exception e) {
+            throw new FileNotFoundException(location);
         }
-    }
-
-    public String getLocation(){
-        return this.LOCATION;
     }
 }

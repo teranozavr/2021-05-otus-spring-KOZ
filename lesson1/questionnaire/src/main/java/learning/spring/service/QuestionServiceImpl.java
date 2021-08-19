@@ -5,6 +5,8 @@ import learning.spring.domain.*;
 
 import java.util.List;
 
+import static learning.spring.helpers.QuestionPrinter.printQuestionarie;
+
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao questionDao;
@@ -14,7 +16,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     public List<Question> getAllQuestions(){
-        return questionDao.getData();
+        return questionDao.getAll();
+    }
+
+    public void printAllQuestions(){
+        printQuestionarie(getAllQuestions());
     }
 
 }

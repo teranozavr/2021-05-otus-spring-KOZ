@@ -12,6 +12,6 @@ public class Main {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "/spring-context.xml");
         QuestionService service = context.getBean(QuestionService.class);
-        printQuestionarie(service.getAllQuestions());
+        service.printAllQuestions();
     }
 }
