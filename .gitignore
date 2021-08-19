@@ -20,8 +20,6 @@
 hs_err_pid*
 
 target/
-!**/src/main/**
-!**/src/test/**
 
 .apt_generated
 .classpath
