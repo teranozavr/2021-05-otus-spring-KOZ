@@ -11,7 +11,11 @@ public interface BookDao {
 
     Book getById(long id);
 
+    List<Book> getByTitle(String title);
+
     List<Book> getAll();
 
     void deleteById(long id);
+
+    int setTitle(Long bookId, String title);
 }

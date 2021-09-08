@@ -35,6 +35,27 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
+    public List<Book> getByTitle(String title) {
+//        String SQL = "select * from book where title like :title";
+//        SqlParameterSource namedParameters = new MapSqlParameterSource();
+//        ((MapSqlParameterSource) namedParameters).addValue("title", "'%"+title+"%'");
+        if (title.isEmpty()||title.isBlank()){
+            return null;
+        }
+        String SQL = "select * from book where title like '%"+title+"%'";
+
+        return namedParameterJdbcTemplate.query(SQL, new BookMapper());
+    }
+//select * from book where title like '%Мед%'
+//    @Override
+//    public List<Book> getByTitle(String title) {
+//        String SQL = "select * from book where title like :title";
+//        SqlParameterSource namedParameters = new MapSqlParameterSource();
+//        ((MapSqlParameterSource) namedParameters).addValue("title", "'%"+title+"%'");
+//        return namedParameterJdbcTemplate.query(SQL, namedParameters, new BookMapper());
+//    }
+
+    @Override
     public List<Book> getAll() {
         return null;
     }
@@ -53,5 +74,17 @@ public class BookDaoJdbc implements BookDao {
             String title = resultSet.getString("title");
             return new Book(id, authorId, genreId, title);
         }
+    }
+    @Override
+    public int setTitle(Long bookId, String title){
+//        update book set title = 'Евгений Онегин2' where id = 1
+        String SQL = "update book set title = :title where id = :bookId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource();
+        ((MapSqlParameterSource) namedParameters).addValue("title", "'"+title+"'");
+        ((MapSqlParameterSource) namedParameters).addValue("bookId", bookId);
+
+        return namedParameterJdbcTemplate.update(SQL, namedParameters);
+
+
     }
 }
