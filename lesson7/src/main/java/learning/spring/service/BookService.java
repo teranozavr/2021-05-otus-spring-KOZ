@@ -1,6 +1,7 @@
 package learning.spring.service;
 
 import learning.spring.dao.BookDao;
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
 import org.springframework.stereotype.Service;
 
@@ -67,5 +68,9 @@ public class BookService {
 
     public void setTitle(Long bookId, String title) {
         bookDao.setTitle(bookId, title);
+    }
+
+    public void createBook(String title, Long authorId, Long genreId){
+        bookDao.createBook(title, authorId, genreId);
     }
 }

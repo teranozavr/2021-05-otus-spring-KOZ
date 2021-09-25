@@ -1,5 +1,6 @@
 package learning.spring.service;
 
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -15,12 +16,18 @@ public class Commands {
 
     private final BookService bookService;
 
+    private final AuthorService authorService;
+
+    private final GenreService genreService;
+
     private List<Book> books;
 
     private static final String NULL = null;
 
-    public Commands(BookService bookService) {
+    public Commands(BookService bookService, AuthorService authorService, GenreService genreService) {
         this.bookService = bookService;
+        this.authorService = authorService;
+        this.genreService = genreService;
     }
 
 
@@ -49,11 +56,17 @@ public class Commands {
         return bookService.getBookCount();
     }
 
+    //create-book "Название" Фамильяр Имен Отчествович Рассказ
     @ShellMethod(key = "create-book", value = "Create book")
     public String createBook(
-            @ShellOption("title") String title,
-            @ShellOption("author") String author,
-            @ShellOption("genre") String genre){
+            @ShellOption({"title", "t"}) String title,
+            @ShellOption({"surname", "s"}) String surname,
+            @ShellOption({"name", "n"}) String name,
+            @ShellOption({"middlename", "m"}) String middleName,
+            @ShellOption({"genre", "g"}) String genre){
+        Long authorId = authorService.addAuthorId(name, surname, middleName);
+        Long genreId = genreService.addGenreId(genre);
+        bookService.createBook(title, authorId, genreId);
         return bookService.printBookInfo(title);
     }
 

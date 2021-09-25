@@ -18,4 +18,6 @@ public interface BookDao {
     void deleteById(long id);
 
     int setTitle(Long bookId, String title);
+
+    int createBook(String title, Long authorId, Long genreId);
 }

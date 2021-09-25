@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BookDaoJdbc implements BookDao {
 
@@ -78,13 +80,26 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int setTitle(Long bookId, String title){
 //        update book set title = 'Евгений Онегин2' where id = 1
-        String SQL = "update book set title = :title where id = :bookId";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("title", "'"+title+"'");
-        ((MapSqlParameterSource) namedParameters).addValue("bookId", bookId);
+            String SQL = "update book set title = :title where id = :bookId";
+            SqlParameterSource namedParameters = new MapSqlParameterSource();
+            ((MapSqlParameterSource) namedParameters).addValue("title", "'"+title+"'");
+            ((MapSqlParameterSource) namedParameters).addValue("bookId", bookId);
+            return namedParameterJdbcTemplate.update(SQL, namedParameters);
+    }
 
-        return namedParameterJdbcTemplate.update(SQL, namedParameters);
-
-
+    @Override
+    public int createBook(String title, Long authorId, Long genreId) {
+        try {
+            String SQL = "insert into BOOK (ID, TITLE, AUTHOR_ID, GENRE_ID) values ((SELECT nextval('AUTHOR_ID')), :title, :authorId, :genreId);";
+            Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("title", title);
+            paramMap.put("authorId", authorId);
+            paramMap.put("genreId", genreId);
+            return namedParameterJdbcTemplate.update(SQL, paramMap);
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return -1;
     }
 }

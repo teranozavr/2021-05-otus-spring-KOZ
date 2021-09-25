@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GenreDaoJdbc implements GenreDao{
 
@@ -16,8 +18,11 @@ public class GenreDaoJdbc implements GenreDao{
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Genre getByName(String name) {
-        return null;
+    public int createGenre(String name) {
+        String SQL = "insert into GENRE (ID, GENRE_NAME) values ((SELECT nextval('GENRE_ID')), :name);";
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("name", name);
+        return namedParameterJdbcTemplate.update(SQL, paramMap);
     }
 
     @Override
@@ -25,6 +30,14 @@ public class GenreDaoJdbc implements GenreDao{
         String SQL = "select * from genre where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("id", id);
+        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new GenreDaoJdbc.GenreMapper());
+    }
+
+    @Override
+    public Genre getByName(String name) {
+        String SQL = "select * from genre where genre_name = :name";
+        SqlParameterSource namedParameters = new MapSqlParameterSource();
+        ((MapSqlParameterSource) namedParameters).addValue("name", name);
         return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new GenreDaoJdbc.GenreMapper());
     }
 

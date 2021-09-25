@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AuthorDaoJdbc implements AuthorDao{
 
@@ -25,6 +27,26 @@ public class AuthorDaoJdbc implements AuthorDao{
         String SQL = "select * from author where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("id", id);
+        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new AuthorDaoJdbc.AuthorMapper());
+    }
+
+    @Override
+    public int createAuthor(String name, String surname, String middlename) {
+        String SQL = "insert into AUTHOR (ID, FIRST_NAME, SURNAME, MIDDLE_NAME) values ((SELECT nextval('author_id')), :name, :surname, :middlename);";
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("name", name);
+        paramMap.put("surname", surname);
+        paramMap.put("middlename", middlename);
+        return namedParameterJdbcTemplate.update(SQL, paramMap);
+    }
+
+    @Override
+    public Author getByName(String name, String surname, String middlename) {
+        String SQL = "select * from author where first_name = :name and surname = :surname and middle_name = :middlename;";
+        SqlParameterSource namedParameters = new MapSqlParameterSource();
+        ((MapSqlParameterSource) namedParameters).addValue("name", name);
+        ((MapSqlParameterSource) namedParameters).addValue("surname", surname);
+        ((MapSqlParameterSource) namedParameters).addValue("middlename", middlename);
         return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new AuthorDaoJdbc.AuthorMapper());
     }
 

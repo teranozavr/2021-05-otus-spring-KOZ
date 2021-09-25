@@ -22,6 +22,8 @@
         </createTable>
         <addPrimaryKey tableName="BOOK" columnNames="ID"/>
         <createSequence sequenceName="BOOK_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="BOOK" columnNames="ID"/>
+        <addUniqueConstraint tableName="BOOK" columnNames="TITLE"/>
 
         <createTable tableName="GENRE" remarks="Genre table">
             <column name="ID" type="BIGINT"/>
@@ -29,6 +31,8 @@
         </createTable>
         <addPrimaryKey tableName="GENRE" columnNames="ID"/>
         <createSequence sequenceName="GENRE_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="GENRE" columnNames="ID"/>
+        <addUniqueConstraint tableName="GENRE" columnNames="GENRE_NAME"/>
 
         <createTable tableName="AUTHOR" remarks="Author table">
             <column name="ID" type="BIGINT"/>
@@ -38,6 +42,8 @@
         </createTable>
         <addPrimaryKey tableName="AUTHOR" columnNames="ID"/>
         <createSequence sequenceName="AUTHOR_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="AUTHOR" columnNames="ID"/>
+        <addUniqueConstraint tableName="AUTHOR" columnNames="FIRST_NAME, SURNAME, MIDDLE_NAME"/>
     </changeSet>
 <!--    Жанры-->
     <changeSet id="2" author="Ilya">
