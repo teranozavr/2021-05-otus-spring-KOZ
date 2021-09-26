@@ -1,14 +1,13 @@
 package learning.spring.service;
 
-import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ShellComponent
@@ -30,25 +29,13 @@ public class Commands {
         this.genreService = genreService;
     }
 
-
+    //select-book --title "Евгений Онегин"
+    //select-book --title "Евгений Онегин" --id 1
     @ShellMethod("Select book")
     public String selectBook(@ShellOption(defaultValue = "") String title,
                              @ShellOption(defaultValue = "") Long id){
         books = bookService.getBookList(id, title);
-        return bookService.printBooksInfo(books);
-    }
-
-
-    @ShellMethod(key = "get-by-id", value = "Shows book information")
-    public String getBookById(
-            @ShellOption("id") String id){
-        return bookService.printBookInfo(Long.parseLong(id));
-    }
-
-    @ShellMethod(key = "get-by-title", value = "Shows book information")
-    public String getBookByTitle(
-            @ShellOption("title") String title){
-        return bookService.printBookInfo(title);
+        return printSelectedBooksInfo(books);
     }
 
     @ShellMethod(key = "get-count", value = "Shows books count")
@@ -70,8 +57,10 @@ public class Commands {
         return bookService.printBookInfo(title);
     }
 
+    //select-book --id 4
+    //set-title Название2
     @ShellMethod("Set title")
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    @ShellMethodAvailability(value = "isBookSelected")
     public String setTitle(@ShellOption(defaultValue = "") String title){
         Long bookId = books.get(0).getId();
         bookService.setTitle(bookId, title);
@@ -79,10 +68,35 @@ public class Commands {
         return bookService.printBooksInfo(books);
     }
 
+    @ShellMethod("Delete book")
+    @ShellMethodAvailability(value = "isBookSelected")
+    public String deleteBook(){
+        books.clear();
+      return bookService.deleteBook(books.get(0));
+    }
+
     private Availability isBookSelected() {
+        if(books==null || books.isEmpty()) return  Availability.unavailable("Выберите одну книгу");
         return books.size() != 1 ? Availability.unavailable("Выберите одну книгу"): Availability.available();
     }
 
-
+    private String printSelectedBooksInfo(List<Book> books){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(books==null || books.isEmpty()){
+            stringBuilder.append("По данному запросу ни одна книга не найдена.\n");
+        }
+        else{
+            if(books.size()>1){
+                stringBuilder.append(new StringFormattedMessage("Выбрано %s книг. Для изменения данных необходимо выбрать одну книгу.\n",books.size()));
+            }
+            else {
+                stringBuilder.append("Выбрана одна книга. Доступны команды изменения/удаления.\n");
+            }
+        }
+        for (Book book : books){
+            stringBuilder.append(bookService.printBookInfo(book.getId()));
+        }
+        return stringBuilder.toString();
+    }
 
 }

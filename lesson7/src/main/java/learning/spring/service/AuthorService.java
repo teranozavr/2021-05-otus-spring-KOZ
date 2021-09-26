@@ -2,7 +2,6 @@ package learning.spring.service;
 
 import learning.spring.dao.AuthorDao;
 import learning.spring.domain.Author;
-import learning.spring.domain.Genre;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +35,6 @@ public class AuthorService {
     public Long getAuthorId(String name, String surname, String middlename){
         Author author = authorDao.getByName(name, surname, middlename);
         return author.getId();
-    }
-
-    public Author getAuthorByName(String name, String surname, String middlename){
-        return authorDao.getByName(name, surname, middlename);
     }
 
     public boolean isAuthorExists(String name, String surname, String middlename){

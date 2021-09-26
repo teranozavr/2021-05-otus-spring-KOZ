@@ -1,7 +1,6 @@
 package learning.spring.service;
 
 import learning.spring.dao.BookDao;
-import learning.spring.domain.Author;
 import learning.spring.domain.Book;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +71,13 @@ public class BookService {
 
     public void createBook(String title, Long authorId, Long genreId){
         bookDao.createBook(title, authorId, genreId);
+    }
+
+    public String deleteBook(Book book){
+        int status = bookDao.deleteBook(book.getId());
+        if(status != 0){
+            return ("Удалена книга с Id: " + book.getId() + "\n");
+        }
+        return "Ошибка удаления книги. \n";
     }
 }

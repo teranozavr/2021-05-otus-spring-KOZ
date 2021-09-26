@@ -18,11 +18,6 @@ public class AuthorDaoJdbc implements AuthorDao{
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public void insert(Author author) {
-
-    }
-
-    @Override
     public Author getById(long id) {
         String SQL = "select * from author where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();

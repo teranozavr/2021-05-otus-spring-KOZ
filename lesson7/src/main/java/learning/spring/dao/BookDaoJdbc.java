@@ -24,11 +24,6 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void insert(Book book) {
-
-    }
-
-    @Override
     public Book getById(long id) {
         String SQL = "select * from book where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -38,33 +33,10 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getByTitle(String title) {
-//        String SQL = "select * from book where title like :title";
-//        SqlParameterSource namedParameters = new MapSqlParameterSource();
-//        ((MapSqlParameterSource) namedParameters).addValue("title", "'%"+title+"%'");
-        if (title.isEmpty()||title.isBlank()){
-            return null;
-        }
-        String SQL = "select * from book where title like '%"+title+"%'";
-
-        return namedParameterJdbcTemplate.query(SQL, new BookMapper());
-    }
-//select * from book where title like '%Мед%'
-//    @Override
-//    public List<Book> getByTitle(String title) {
-//        String SQL = "select * from book where title like :title";
-//        SqlParameterSource namedParameters = new MapSqlParameterSource();
-//        ((MapSqlParameterSource) namedParameters).addValue("title", "'%"+title+"%'");
-//        return namedParameterJdbcTemplate.query(SQL, namedParameters, new BookMapper());
-//    }
-
-    @Override
-    public List<Book> getAll() {
-        return null;
-    }
-
-    @Override
-    public void deleteById(long id) {
-
+        String SQL = "select * from book where title like :title";
+        SqlParameterSource namedParameters = new MapSqlParameterSource();
+        ((MapSqlParameterSource) namedParameters).addValue("title", "%"+title+"%");
+        return namedParameterJdbcTemplate.query(SQL, namedParameters, new BookMapper());
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -79,10 +51,9 @@ public class BookDaoJdbc implements BookDao {
     }
     @Override
     public int setTitle(Long bookId, String title){
-//        update book set title = 'Евгений Онегин2' where id = 1
             String SQL = "update book set title = :title where id = :bookId";
             SqlParameterSource namedParameters = new MapSqlParameterSource();
-            ((MapSqlParameterSource) namedParameters).addValue("title", "'"+title+"'");
+            ((MapSqlParameterSource) namedParameters).addValue("title", title);
             ((MapSqlParameterSource) namedParameters).addValue("bookId", bookId);
             return namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
@@ -101,5 +72,13 @@ public class BookDaoJdbc implements BookDao {
             System.out.println(e);
         }
         return -1;
+    }
+
+    @Override
+    public int deleteBook(Long bookId) {
+        String SQL = "delete from BOOK where id = :id";
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", bookId);
+        return namedParameterJdbcTemplate.update(SQL, paramMap);
     }
 }
