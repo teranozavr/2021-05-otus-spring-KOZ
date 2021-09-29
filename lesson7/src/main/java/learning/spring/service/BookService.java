@@ -46,8 +46,7 @@ public class BookService {
         StringBuilder sb = new StringBuilder();
         for (Book b: books
         ) {
-            sb.append(printBookInfo(b.getId()))
-                    .append("\n");
+            sb.append(printBookInfo(b.getId()));
         }
         return sb.toString();
     }

@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <preConditions>
-        <dbms type="postgresql"/>
+        <dbms type="h2"/>
     </preConditions>
 
     <changeSet id="0" author="Ilya">
@@ -51,7 +51,7 @@
         <addNotNullConstraint tableName="AUTHOR" columnName="ID"/>
         <addPrimaryKey tableName="AUTHOR" columnNames="ID"/>
     </changeSet>
-    <!--    Жанры-->
+<!--    Жанры-->
     <changeSet id="2" author="Ilya">
         <insert tableName="GENRE">
             <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
@@ -86,7 +86,7 @@
             <column name="GENRE_NAME">Поэма</column>
         </insert>
 
-        <!--        Авторы-->
+<!--        Авторы-->
         <insert tableName="AUTHOR">
             <column name="ID" valueComputed="(SELECT nextval('author_id'))"/>
             <column name="FIRST_NAME">Роджер</column>
@@ -101,7 +101,7 @@
             <column name="MIDDLE_NAME">Сергеевич</column>
         </insert>
 
-        <!--        Произведения-->
+<!--        Произведения-->
         <insert tableName="BOOK">
             <column name="ID" valueComputed="(SELECT nextval('book_id'))"/>
             <column name="TITLE">Евгений Онегин</column>

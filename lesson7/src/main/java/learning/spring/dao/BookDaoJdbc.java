@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class BookDaoJdbc implements BookDao {
 
     @Autowired NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -61,7 +63,7 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int createBook(String title, Long authorId, Long genreId) {
         try {
-            String SQL = "insert into BOOK (ID, TITLE, AUTHOR_ID, GENRE_ID) values ((SELECT nextval('AUTHOR_ID')), :title, :authorId, :genreId);";
+            String SQL = "insert into BOOK (ID, TITLE, AUTHOR_ID, GENRE_ID) values ((SELECT nextval('BOOK_ID')), :title, :authorId, :genreId);";
             Map<String, Object> paramMap = new HashMap<String, Object>();
             paramMap.put("title", title);
             paramMap.put("authorId", authorId);
