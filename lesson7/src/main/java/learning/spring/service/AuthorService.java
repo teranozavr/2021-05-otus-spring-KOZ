@@ -29,12 +29,23 @@ public class AuthorService {
     }
 
     public void createAuthor(String name, String surname, String middlename){
-        authorDao.createAuthor(name, surname, middlename);
+        try {
+            authorDao.createAuthor(name, surname, middlename);
+        }
+        catch (Exception e){
+            System.out.println("Ошибка создания автора. Автор с данным ФИО уже сущетвует.");
+        }
     }
 
     public Long getAuthorId(String name, String surname, String middlename){
-        Author author = authorDao.getByName(name, surname, middlename);
-        return author.getId();
+        try{
+            Author author = authorDao.getByName(name, surname, middlename);
+            return author.getId();
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
     public boolean isAuthorExists(String name, String surname, String middlename){
