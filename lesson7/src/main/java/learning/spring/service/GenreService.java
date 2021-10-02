@@ -34,12 +34,22 @@ public class GenreService {
     }
 
     public void createGenre(String name){
-        genreDao.createGenre(name);
+        try {
+            genreDao.createGenre(name);
+        }
+            catch (Exception e){
+            System.out.println("Ошибка создания жанра. Жанр с данным именем уже сущетвует.");
+        }
     }
 
     public Long getGenreId(String name){
-        Genre genre = genreDao.getByName(name);
-        return genre.getId();
+        try {
+            Genre genre = genreDao.getByName(name);
+            return genre.getId();
+        }
+            catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     public Long addGenreId(String name){

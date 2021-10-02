@@ -35,7 +35,6 @@ public class AuthorServiceTests {
     @BeforeEach
     private void init(){
         authorService = new AuthorService(authorDaoJdbc);
-
     }
 
     @Description("Выводит ФИО автора")
