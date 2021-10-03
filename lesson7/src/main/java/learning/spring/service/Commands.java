@@ -21,8 +21,6 @@ public class Commands {
 
     private List<Book> books;
 
-    private static final String NULL = null;
-
     public Commands(BookService bookService, AuthorService authorService, GenreService genreService) {
         this.bookService = bookService;
         this.authorService = authorService;
@@ -35,16 +33,16 @@ public class Commands {
     public String selectBook(@ShellOption(defaultValue = "") String title,
                              @ShellOption(defaultValue = "") Long id){
         books = bookService.getBookList(id, title);
-        return printSelectedBooksInfo(books);
+        return bookService.printSelectedBooksInfo(books);
     }
-
-    @ShellMethod(key = "get-count", value = "Shows books count")
-    public int getBookCount(){
+    //get-count
+    @ShellMethod("Shows books count")
+    public int getCount(){
         return bookService.getBookCount();
     }
 
     //create-book "Название" Фамильяр Имен Отчествович Рассказ
-    @ShellMethod(key = "create-book", value = "Create book")
+    @ShellMethod("Create book")
     public String createBook(
             @ShellOption({"title", "t"}) String title,
             @ShellOption({"surname", "s"}) String surname,
@@ -53,8 +51,13 @@ public class Commands {
             @ShellOption({"genre", "g"}) String genre){
         Long authorId = authorService.addAuthorId(name, surname, middleName);
         Long genreId = genreService.addGenreId(genre);
-        bookService.createBook(title, authorId, genreId);
-        return bookService.printBookInfo(title);
+        int createStatus = bookService.createBook(title, authorId, genreId);
+        switch (createStatus) {
+            case 1: return bookService.printBookInfo(title, authorId, genreId);
+            case -1: return "Книга с данными параметрами уже сущестует!";
+            case -2: return "При создании книги произошла ошибка!";
+        }
+        return null;
     }
 
     //select-book --id 4
@@ -71,32 +74,13 @@ public class Commands {
     @ShellMethod("Delete book")
     @ShellMethodAvailability(value = "isBookSelected")
     public String deleteBook(){
+        String result = bookService.deleteBook(books.get(0));
         books.clear();
-      return bookService.deleteBook(books.get(0));
+      return result;
     }
 
     private Availability isBookSelected() {
         if(books==null || books.isEmpty()) return  Availability.unavailable("Выберите одну книгу");
         return books.size() != 1 ? Availability.unavailable("Выберите одну книгу"): Availability.available();
     }
-
-    private String printSelectedBooksInfo(List<Book> books){
-        StringBuilder stringBuilder = new StringBuilder();
-        if(books==null || books.isEmpty()){
-            stringBuilder.append("По данному запросу ни одна книга не найдена.\n");
-        }
-        else{
-            if(books.size()>1){
-                stringBuilder.append(new StringFormattedMessage("Выбрано %s книг. Для изменения данных необходимо выбрать одну книгу.\n",books.size()));
-            }
-            else {
-                stringBuilder.append("Выбрана одна книга. Доступны команды изменения/удаления.\n");
-            }
-        }
-        for (Book book : books){
-            stringBuilder.append(bookService.printBookInfo(book.getId()));
-        }
-        return stringBuilder.toString();
-    }
-
 }

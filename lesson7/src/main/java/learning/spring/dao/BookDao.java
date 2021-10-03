@@ -9,6 +9,8 @@ public interface BookDao {
 
     Book getById(long id);
 
+    Book getByParams(String title, Long authorId, Long genreID);
+
     List<Book> getByTitle(String title);
 
     int setTitle(Long bookId, String title);

@@ -22,8 +22,7 @@
         </createTable>
 
         <createSequence sequenceName="BOOK_ID" cycle="false"></createSequence>
-        <addUniqueConstraint tableName="BOOK" columnNames="ID"/>
-        <addUniqueConstraint tableName="BOOK" columnNames="TITLE"/>
+        <addUniqueConstraint tableName="BOOK" columnNames="TITLE, AUTHOR_ID, GENRE_ID"/>
         <addNotNullConstraint tableName="BOOK" columnName="ID"/>
         <addPrimaryKey tableName="BOOK" columnNames="ID"/>
 

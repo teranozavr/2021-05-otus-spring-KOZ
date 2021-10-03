@@ -2,6 +2,7 @@ package learning.spring.dao;
 
 import learning.spring.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -40,6 +41,16 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
+    public Book getByParams(String title, Long authorId, Long genreId) {
+        String SQL = "select * from book where (title = :title and author_id = :authorId and genre_id = :genreId)";
+        SqlParameterSource namedParameters = new MapSqlParameterSource();
+        ((MapSqlParameterSource) namedParameters).addValue("title", title);
+        ((MapSqlParameterSource) namedParameters).addValue("authorId", authorId);
+        ((MapSqlParameterSource) namedParameters).addValue("genreId", genreId);
+        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new BookMapper());
+    }
+
+    @Override
     public List<Book> getByTitle(String title) {
         String SQL = "select * from book where title like :title";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -74,12 +85,18 @@ public class BookDaoJdbc implements BookDao {
             paramMap.put("title", title);
             paramMap.put("authorId", authorId);
             paramMap.put("genreId", genreId);
-            return namedParameterJdbcTemplate.update(SQL, paramMap);
+            int createStatus = namedParameterJdbcTemplate.update(SQL, paramMap);
+
+            System.out.println("createStatus = "+ createStatus);
+            return createStatus;
         }
         catch (Exception e){
+            if(e instanceof DuplicateKeyException) {
+                return -1;
+            }
             System.out.println(e);
         }
-        return -1;
+        return -2;
     }
 
     @Override

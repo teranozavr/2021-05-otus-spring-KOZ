@@ -47,6 +47,16 @@ class BookDaoTests {
         assertEquals(book.getId(), existBook.getId());
     }
 
+    @DisplayName("Получает данные книги по title, authorId, genreId")
+    @Test
+    public void getByParamsTest(){
+        Book book = bookDaoJdbc.getByParams(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID);
+        assertEquals(book.getTitle(), existBook.getTitle());
+        assertEquals(book.getAuthorId(), existBook.getAuthorId());
+        assertEquals(book.getGenreId(), existBook.getGenreId());
+        assertEquals(book.getId(), existBook.getId());
+    }
+
     @DisplayName("Получает данные книги по названию")
     @Test
     public void getByTitleTest(){

@@ -2,6 +2,7 @@ package learning.spring.service;
 
 import learning.spring.dao.BookDao;
 import learning.spring.domain.Book;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,6 +46,11 @@ public class BookService {
         return printBooksInfo(books);
     }
 
+    public String printBookInfo(String title, Long authorId, Long genreId){
+        Book book = bookDao.getByParams(title, authorId, genreId);
+        return printBooksInfo(book);
+    }
+
     public String printBooksInfo(List<Book> books){
         StringBuilder sb = new StringBuilder();
         for (Book b: books
@@ -54,15 +60,25 @@ public class BookService {
         return sb.toString();
     }
 
+    private String printBooksInfo(Book book){
+        List<Book> books = new ArrayList<>();
+        books.add(book);
+        return printBooksInfo(books);
+    }
+
     public int getBookCount(){
         return bookDao.count();
     }
 
     public List<Book> getBookList(Long id, String title){
         if(id!=null){
-            List<Book> books = new ArrayList<>();
-            books.add(bookDao.getById(id));
-            return books;
+            Book book = bookDao.getById(id);
+            if(book != null){
+                List<Book> books = new ArrayList<>();
+                books.add(bookDao.getById(id));
+                return books;
+            }
+            return null;
         }
         return bookDao.getByTitle(title);
     }
@@ -71,15 +87,36 @@ public class BookService {
         bookDao.setTitle(bookId, title);
     }
 
-    public void createBook(String title, Long authorId, Long genreId){
-        bookDao.createBook(title, authorId, genreId);
+    public int createBook(String title, Long authorId, Long genreId){
+        return bookDao.createBook(title, authorId, genreId);
     }
 
     public String deleteBook(Book book){
-        int status = bookDao.deleteBook(book.getId());
-        if(status != 0){
+        try{
+            bookDao.deleteBook(book.getId());
             return ("Удалена книга с Id: " + book.getId() + "\n");
         }
-        return "Ошибка удаления книги. \n";
+        catch (Exception e ){
+            return "Ошибка удаления книги. \n";
+        }
+    }
+
+    public String printSelectedBooksInfo(List<Book> books){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(books==null || books.isEmpty()){
+            stringBuilder.append("По данному запросу ни одна книга не найдена.\n");
+        }
+        else{
+            if(books.size()>1){
+                stringBuilder.append(new StringFormattedMessage("Выбрано %s книг. Для изменения данных необходимо выбрать одну книгу.\n",books.size()));
+            }
+            else {
+                stringBuilder.append("Выбрана одна книга. Доступны команды изменения/удаления.\n");
+            }
+            for (Book book : books){
+                stringBuilder.append(printBookInfo(book.getId()));
+            }
+        }
+        return stringBuilder.toString();
     }
 }
