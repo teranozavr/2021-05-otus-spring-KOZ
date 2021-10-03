@@ -27,8 +27,11 @@ public class Commands {
         this.genreService = genreService;
     }
 
+    //select-book --id 1
     //select-book --title "Евгений Онегин"
     //select-book --title "Евгений Онегин" --id 1
+    //select-book --title "Мед"
+    //select-book
     @ShellMethod("Select book")
     public String selectBook(@ShellOption(defaultValue = "") String title,
                              @ShellOption(defaultValue = "") Long id){
@@ -71,6 +74,7 @@ public class Commands {
         return bookService.printBooksInfo(books);
     }
 
+    //delete-book
     @ShellMethod("Delete book")
     @ShellMethodAvailability(value = "isBookSelected")
     public String deleteBook(){
