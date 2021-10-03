@@ -12,7 +12,7 @@ library:
   pgdb: library
   pguser: postgres
   pgpwd: mysecretpassword
-  pgschema: v2
+  pgschema: public
 
 logging:
   level:
