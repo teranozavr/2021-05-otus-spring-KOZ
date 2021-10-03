@@ -2,6 +2,7 @@ package learning.spring.dao;
 
 import learning.spring.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -30,7 +31,12 @@ public class BookDaoJdbc implements BookDao {
         String SQL = "select * from book where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("id", id);
-        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new BookMapper());
+        try {
+            return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new BookMapper());
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
@@ -38,7 +44,7 @@ public class BookDaoJdbc implements BookDao {
         String SQL = "select * from book where title like :title";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("title", "%"+title+"%");
-        return namedParameterJdbcTemplate.query(SQL, namedParameters, new BookMapper());
+            return namedParameterJdbcTemplate.query(SQL, namedParameters, new BookMapper());
     }
 
     private static class BookMapper implements RowMapper<Book> {

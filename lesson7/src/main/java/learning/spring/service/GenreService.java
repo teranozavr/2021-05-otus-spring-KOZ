@@ -15,7 +15,12 @@ public class GenreService {
     }
 
     public String printGenreInfo(long id){
-        genre = genreDao.getById(id);
+        try {
+            genre = genreDao.getById(id);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         StringBuilder sb = new StringBuilder()
                 .append("Жанр: ")
                 .append(genre.getGenreName())

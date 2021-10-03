@@ -26,9 +26,6 @@ public class AuthorServiceTests {
     private static final String NOT_EXIST_SUR_NAME = "Желязны2";
     private static final String NOT_EXIST_MIDDLE_NAME = "Джозеф2";
 
-//    private Author author = new
-
-
     @Autowired
     private AuthorDaoJdbc authorDaoJdbc;
 

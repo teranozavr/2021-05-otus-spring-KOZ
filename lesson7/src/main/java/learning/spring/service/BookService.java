@@ -21,6 +21,9 @@ public class BookService {
 
     public String printBookInfo(long id){
         Book book = bookDao.getById(id);
+        if(book == null){
+            return null;
+        }
         StringBuilder sb = new StringBuilder()
                 .append("Id: ")
                 .append(book.getId())

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Тесты AuthorService")
+@DisplayName("Тесты GenreService")
 @JdbcTest
 @Import({GenreDaoJdbc.class})
 public class GenreServiceTests {
