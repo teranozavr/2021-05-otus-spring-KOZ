@@ -31,8 +31,8 @@ class AuthorDaoTests {
     @Description("Создает автора")
     @Test
     public void createAuthorTest() {
-        authorDaoJdbc.createAuthor(NAME, SUR_NAME, MIDDLE_NAME);
-        assertNotNull(authorDaoJdbc.getByName(NAME, SUR_NAME, MIDDLE_NAME));
+        authorDaoJdbc.createAuthor(getAuthor(NAME, SUR_NAME, MIDDLE_NAME));
+        assertNotNull(authorDaoJdbc.getByName(getAuthor(NAME, SUR_NAME, MIDDLE_NAME)));
     }
 
     @Description("Получает данные автора по ID")
@@ -48,10 +48,14 @@ class AuthorDaoTests {
     @Description("Получает данные по ФИО автора")
     @Test
     public void getByNameTest(){
-        Author author = authorDaoJdbc.getByName(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME);
+        Author author = authorDaoJdbc.getByName(getAuthor(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
         assertEquals(author.getId(), 1L);
         assertEquals(author.getFirstName(), EXIST_NAME);
         assertEquals(author.getSurName(), EXIST_SUR_NAME);
         assertEquals(author.getMiddleName(), EXIST_MIDDLE_NAME);
+    }
+
+    private Author getAuthor(String name, String surname, String middlenamme){
+        return new Author(1L, name, surname, middlenamme);
     }
 }

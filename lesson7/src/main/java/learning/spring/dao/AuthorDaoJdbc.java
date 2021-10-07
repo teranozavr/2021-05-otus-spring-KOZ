@@ -28,22 +28,22 @@ public class AuthorDaoJdbc implements AuthorDao{
     }
 
     @Override
-    public int createAuthor(String name, String surname, String middlename) {
+    public int createAuthor(Author author) {
         String SQL = "insert into AUTHOR (ID, FIRST_NAME, SURNAME, MIDDLE_NAME) values ((SELECT nextval('author_id')), :name, :surname, :middlename);";
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("name", name);
-        paramMap.put("surname", surname);
-        paramMap.put("middlename", middlename);
+        paramMap.put("name", author.getFirstName());
+        paramMap.put("surname", author.getSurName());
+        paramMap.put("middlename", author.getMiddleName());
         return namedParameterJdbcTemplate.update(SQL, paramMap);
     }
 
     @Override
-    public Author getByName(String name, String surname, String middlename) {
+    public Author getByName(Author author) {
         String SQL = "select * from author where first_name = :name and surname = :surname and middle_name = :middlename;";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("name", name);
-        ((MapSqlParameterSource) namedParameters).addValue("surname", surname);
-        ((MapSqlParameterSource) namedParameters).addValue("middlename", middlename);
+        ((MapSqlParameterSource) namedParameters).addValue("name", author.getFirstName());
+        ((MapSqlParameterSource) namedParameters).addValue("surname", author.getSurName());
+        ((MapSqlParameterSource) namedParameters).addValue("middlename", author.getMiddleName());
         return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new AuthorDaoJdbc.AuthorMapper());
     }
 
