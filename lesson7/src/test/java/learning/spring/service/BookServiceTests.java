@@ -1,53 +1,83 @@
 package learning.spring.service;
 
-import learning.spring.dao.AuthorDaoJdbc;
-import learning.spring.dao.BookDaoJdbc;
-import learning.spring.dao.GenreDaoJdbc;
+import learning.spring.dao.*;
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import learning.spring.domain.Genre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.Import;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Тесты BookService")
-@JdbcTest
-@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
+@ExtendWith(MockitoExtension.class)
 public class BookServiceTests {
 
-    private BookService bookService;
     private static final String TEST_TITLE = "Spring. Все паттерны проектирования";
     private static final Long EXIST_BOOK_ID = 1L;
     private static final Long EXIST_AUTHOR_ID = 2L;
     private static final Long EXIST_GENRE_ID = 5L;
     private static final String EXIST_TITLE = "Евгений Онегин";
 
-    @Autowired
-    private BookDaoJdbc bookDaoJdbc;
+    private static final String EXIST_NAME = "Александр";
+    private static final String EXIST_SUR_NAME = "Пушкин";
+    private static final String EXIST_MIDDLE_NAME = "Сергеевич";
 
-    @Autowired
-    private AuthorDaoJdbc authorDaoJdbc;
+    private static final String EXIST_GENRE_NAME = "Роман";
+    private static final Genre EXIST_GENRE = new Genre(EXIST_GENRE_ID, EXIST_GENRE_NAME);
 
-    @Autowired
-    private GenreDaoJdbc genreDaoJdbc;
+    private static final Book BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE);
+    private static final List<Book> BOOKS = new ArrayList<>();
+    private static final Author EXIST_AUTHOR = new Author(1L, EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME);
+
+
+    @Mock
+    private AuthorDao authorDao;
+
+    @Mock
+    private AuthorService authorService;
+
+    @Mock
+    GenreDao genreDao;
+
+    @Mock
+    private GenreService genreService;
+
+    @Mock
+    private BookDao bookDao;
+
+    @InjectMocks
+    private BookService bookService;
 
     @BeforeEach
     private void init(){
-        AuthorService authorService = new AuthorService(authorDaoJdbc);
-        GenreService genreService = new GenreService(genreDaoJdbc);
-        bookService = new BookService(bookDaoJdbc, authorService, genreService);
+        ReflectionTestUtils.setField(authorService, "authorDao", authorDao);
+        ReflectionTestUtils.setField(genreService, "genreDao", genreDao);
+        if(BOOKS.size()==0) BOOKS.add(BOOK);
     }
 
     @DisplayName("Выводит информацию о книге по ID")
     @Test
     void printBookInfoByIdTest() {
+        when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
+        when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);
+        when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
+        when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
+        when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
+
         assertEquals(bookService.printBookInfo(EXIST_BOOK_ID), "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
                 " Автор: Александр Сергеевич Пушкин\n" +
@@ -58,6 +88,13 @@ public class BookServiceTests {
     @DisplayName("Выводит информацию о книге по Title")
     @Test
     void printBookInfoByTitleTest() {
+        when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
+        when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);
+        when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
+        when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
+        when(bookDao.getByTitle(EXIST_TITLE)).thenReturn(BOOKS);
+        when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
+
         assertEquals(bookService.printBookInfo(EXIST_TITLE), "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
                 " Автор: Александр Сергеевич Пушкин\n" +
@@ -68,6 +105,13 @@ public class BookServiceTests {
     @DisplayName("\"Выводит информацию о книге по Title, authorId, genreId")
     @Test
     void printBookInfoByParamsTest(){
+        when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
+        when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);
+        when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
+        when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
+        when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
+        when(bookDao.getByParams(EXIST_TITLE,EXIST_AUTHOR_ID,EXIST_GENRE_ID)).thenReturn(BOOK);
+
         assertEquals(bookService.printBookInfo(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
                 " Автор: Александр Сергеевич Пушкин\n" +
@@ -78,44 +122,51 @@ public class BookServiceTests {
     @DisplayName("Выводит количество книг")
     @Test
     void getBookCount() {
+        when(bookDao.count()).thenReturn(3);
         assertEquals(bookService.getBookCount(), 3);
     }
 
     @DisplayName("Устанавливает Title")
     @Test
     void setTitleTest(){
-        bookService.setTitle(1L, "Test");
-        assertEquals(bookService.printBookInfo(EXIST_BOOK_ID), "Id: 1\n" +
-                " Название: Test\n" +
-                " Автор: Александр Сергеевич Пушкин\n" +
-                " Жанр: Роман\n" +
-                "\n");
+        when(bookDao.setTitle(EXIST_BOOK_ID, EXIST_TITLE)).thenReturn(1);
+        bookService.setTitle(EXIST_BOOK_ID, EXIST_TITLE);
+        verify(bookDao, times(1)).setTitle(eq(EXIST_BOOK_ID), eq(EXIST_TITLE));
     }
 
     @DisplayName("Создает книгу")
     @Test
     void createBookTest(){
-        int bookCount = bookService.getBookCount();
-        bookService.createBook(TEST_TITLE, 1L, 1L);
-        assertEquals(bookCount+1, bookService.getBookCount());
-        assertTrue(bookService.printBookInfo(TEST_TITLE).contains(TEST_TITLE));
+        when(bookDao.createBook(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID)).thenReturn(1);
+        assertEquals(bookService.createBook(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), 1);
+        verify(bookDao, times(1)).createBook(eq(EXIST_TITLE), eq(EXIST_AUTHOR_ID), eq(EXIST_GENRE_ID));
     }
 
     @DisplayName("Удаляет книгу")
     @Test
     void deleteBookTest(){
-        Book book = new Book(1L, 1L, 1L, TEST_TITLE);
-        int bookCount = bookService.getBookCount();
-        bookService.deleteBook(book);
-        assertEquals(bookCount-1, bookService.getBookCount());
+        when(bookDao.deleteBook(EXIST_BOOK_ID)).thenReturn(1);
+        assertEquals(bookService.deleteBook(BOOK), "Удалена книга с Id: 1\n");
+        verify(bookDao, times(1)).deleteBook(eq(EXIST_BOOK_ID));
+    }
+
+    @DisplayName("Удаляет книгу (негативный тест)")
+    @Test
+    void deleteBookNegativeTest(){
+        when(bookDao.deleteBook(EXIST_BOOK_ID)).thenThrow(new RuntimeException());
+        assertEquals(bookService.deleteBook(BOOK), "Ошибка удаления книги. \n");
+        verify(bookDao, times(1)).deleteBook(eq(EXIST_BOOK_ID));
     }
 
     @DisplayName("Печатает информацию о книге")
     @Test
     void printSelectedBooksInfoOneBookTest(){
-        List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, 2L, 5L, TEST_TITLE));
-        assertEquals(bookService.printSelectedBooksInfo(books), "Выбрана одна книга. Доступны команды изменения/удаления.\n" +
+        when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
+        when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);
+        when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
+        when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
+        when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
+        assertEquals(bookService.printSelectedBooksInfo(BOOKS), "Выбрана одна книга. Доступны команды изменения/удаления.\n" +
                 "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
                 " Автор: Александр Сергеевич Пушкин\n" +
@@ -126,8 +177,14 @@ public class BookServiceTests {
     @Test
     void printSelectedBooksInfoMultyBookTest(){
         List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, 2L, 5L, TEST_TITLE));
+        books.add(new Book(1L, EXIST_AUTHOR_ID, EXIST_GENRE_ID, TEST_TITLE));
         books.add(new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE));
+
+        when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
+        when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);
+        when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
+        when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
+        when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
 
         assertEquals(bookService.printSelectedBooksInfo(books), "Выбрано 2 книг. Для изменения данных необходимо выбрать одну книгу.\n" +
                 "Id: 1\n" +
