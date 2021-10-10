@@ -16,7 +16,6 @@ import java.util.List;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
 @DisplayName("Тесты BookDao")
 @JdbcTest
 @Import({BookDaoJdbc.class})
@@ -69,7 +68,7 @@ class BookDaoTests {
         assertEquals(book.getId(), existBook.getId());
     }
 
-    @Description("Создает книгу")
+    @DisplayName("Создает книгу")
     @Test
     public void createBookTest() {
         int bookCount = bookDaoJdbc.count();
@@ -90,7 +89,7 @@ class BookDaoTests {
         assertEquals(-1, createStatus);
     }
 
-    @Description("Удаляет книгу по ID")
+    @DisplayName("Удаляет книгу по ID")
     @Test
     public void deleteBookTest(){
         int bookCount = bookDaoJdbc.count();

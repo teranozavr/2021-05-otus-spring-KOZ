@@ -29,20 +29,20 @@ public class GenreServiceTests {
         genreService = new GenreService(genreDaoJdbc);
     }
 
-    @Description("Выводит название жанра")
+    @DisplayName("Выводит название жанра")
     @Test
     public void printGenreInfoTest(){
         assertEquals(genreService.printGenreInfo(1L), "Жанр: Былина\n");
     }
 
-    @Description("Проверяет существование жанра")
+    @DisplayName("Проверяет существование жанра")
     @Test
     public void isGenreExistsTest(){
         assertTrue(genreService.isGenreExists(EXIST_GENRE));
         assertFalse(genreService.isGenreExists(NOT_EXIST_GENRE));
     }
 
-    @Description("Создает жанр")
+    @DisplayName("Создает жанр")
     @Test
     public void createGenre(){
         assertFalse(genreService.isGenreExists(GENRE));
@@ -51,14 +51,14 @@ public class GenreServiceTests {
         genreService.createGenre(GENRE);
     }
 
-    @Description("Полуает ID жанра по имени")
+    @DisplayName("Полуает ID жанра по имени")
     @Test
     public void getGenreIdTest(){
         assertNotNull(genreService.getGenreId(EXIST_GENRE));
         assertNull(genreService.getGenreId(NOT_EXIST_GENRE));
     }
 
-    @Description("Получает Id нового, или существующего жанра")
+    @DisplayName("Получает Id нового, или существующего жанра")
     @Test
     public void addGenreIdTest(){
         assertNotNull(genreService.addGenreId(EXIST_GENRE));

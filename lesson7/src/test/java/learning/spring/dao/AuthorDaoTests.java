@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
 @DisplayName("Тесты AuthorDao")
 @JdbcTest
 @Import({AuthorDaoJdbc.class})
@@ -28,14 +27,14 @@ class AuthorDaoTests {
     @Autowired
     AuthorDaoJdbc authorDaoJdbc;
 
-    @Description("Создает автора")
+    @DisplayName("Создает автора")
     @Test
     public void createAuthorTest() {
         authorDaoJdbc.createAuthor(getAuthor(NAME, SUR_NAME, MIDDLE_NAME));
         assertNotNull(authorDaoJdbc.getByName(getAuthor(NAME, SUR_NAME, MIDDLE_NAME)));
     }
 
-    @Description("Получает данные автора по ID")
+    @DisplayName("Получает данные автора по ID")
     @Test
     public void getByIdTest(){
         Author author = authorDaoJdbc.getById(1L);
@@ -45,7 +44,7 @@ class AuthorDaoTests {
         assertEquals(author.getMiddleName(), EXIST_MIDDLE_NAME);
     }
 
-    @Description("Получает данные по ФИО автора")
+    @DisplayName("Получает данные по ФИО автора")
     @Test
     public void getByNameTest(){
         Author author = authorDaoJdbc.getByName(getAuthor(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));

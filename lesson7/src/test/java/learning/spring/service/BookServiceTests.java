@@ -4,8 +4,6 @@ import learning.spring.dao.AuthorDaoJdbc;
 import learning.spring.dao.BookDaoJdbc;
 import learning.spring.dao.GenreDaoJdbc;
 import learning.spring.domain.Book;
-import liquibase.pro.packaged.D;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

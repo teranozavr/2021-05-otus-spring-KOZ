@@ -34,13 +34,13 @@ public class AuthorServiceTests {
         authorService = new AuthorService(authorDaoJdbc);
     }
 
-    @Description("Выводит ФИО автора")
+    @DisplayName("Выводит ФИО автора")
     @Test
     public void printAuthorInfoTest(){
         assertEquals(authorService.printAuthorInfo(1L), "Автор: Роджер Джозеф Желязны\n");
     }
 
-    @Description("Создает автора")
+    @DisplayName("Создает автора")
     @Test
     public void createAuthorTest(){
         assertFalse(authorService.isAuthorExists(NAME, SUR_NAME, MIDDLE_NAME));
@@ -49,21 +49,21 @@ public class AuthorServiceTests {
         authorService.createAuthor(NAME, SUR_NAME, MIDDLE_NAME);
     }
 
-    @Description("Получает ID автора по ФИО")
+    @DisplayName("Получает ID автора по ФИО")
     @Test
     public void getAuthorIdTest(){
         assertNotNull(authorService.getAuthorId(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
         assertNull(authorService.getAuthorId(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
     }
 
-    @Description("Проверяет существование автора")
+    @DisplayName("Проверяет существование автора")
     @Test
     public void isAuthorExistsTest(){
         assertTrue(authorService.isAuthorExists(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
         assertFalse(authorService.isAuthorExists(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
     }
 
-    @Description("Получает Id нового, или существующего автора")
+    @DisplayName("Получает Id нового, или существующего автора")
     @Test
     public void addAuthorIdTest(){
         assertNotNull(authorService.addAuthorId(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));

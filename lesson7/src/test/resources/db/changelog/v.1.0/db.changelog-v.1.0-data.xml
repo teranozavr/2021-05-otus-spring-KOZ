@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2" author="Ilya">
+        <!--    Жанры-->
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Былина</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Очерк</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Повесть</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Притча</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Роман</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Хроника</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Эссе</column>
+        </insert>
+        <insert tableName="GENRE">
+            <column name="ID" valueComputed="(SELECT nextval('genre_id'))"/>
+            <column name="GENRE_NAME">Поэма</column>
+        </insert>
+
+        <!--        Авторы-->
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="(SELECT nextval('author_id'))"/>
+            <column name="FIRST_NAME">Роджер</column>
+            <column name="SURNAME">Желязны</column>
+            <column name="MIDDLE_NAME">Джозеф</column>
+        </insert>
+
+        <insert tableName="AUTHOR">
+            <column name="ID" valueComputed="(SELECT nextval('author_id'))"/>
+            <column name="FIRST_NAME">Александр</column>
+            <column name="SURNAME">Пушкин</column>
+            <column name="MIDDLE_NAME">Сергеевич</column>
+        </insert>
+
+        <!--        Произведения-->
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="(SELECT nextval('book_id'))"/>
+            <column name="TITLE">Евгений Онегин</column>
+            <column name="AUTHOR_ID" valueComputed="(SELECT ID FROM AUTHOR WHERE SURNAME LIKE 'Пушкин' LIMIT 1)"/>
+            <column name="GENRE_ID" valueComputed="(SELECT ID FROM GENRE WHERE GENRE_NAME LIKE 'Роман' LIMIT 1)"/>
+        </insert>
+
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="(SELECT nextval('book_id'))"/>
+            <column name="TITLE">Хроники Амбера</column>
+            <column name="AUTHOR_ID" valueComputed="(SELECT ID FROM AUTHOR WHERE SURNAME LIKE 'Желязны' LIMIT 1)"/>
+            <column name="GENRE_ID" valueComputed="(SELECT ID FROM GENRE WHERE GENRE_NAME LIKE 'Роман' LIMIT 1)"/>
+        </insert>
+
+        <insert tableName="BOOK">
+            <column name="ID" valueComputed="(SELECT nextval('book_id'))"/>
+            <column name="TITLE">Медный всадник</column>
+            <column name="AUTHOR_ID" valueComputed="(SELECT ID FROM AUTHOR WHERE SURNAME LIKE 'Пушкин' LIMIT 1)"/>
+            <column name="GENRE_ID" valueComputed="(SELECT ID FROM GENRE WHERE GENRE_NAME LIKE 'Поэма' LIMIT 1)"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

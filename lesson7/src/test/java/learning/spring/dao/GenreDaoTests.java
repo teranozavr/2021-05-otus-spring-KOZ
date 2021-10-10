@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
 @DisplayName("Тесты GenreDao")
 @JdbcTest
 @Import({GenreDaoJdbc.class})
@@ -24,14 +23,14 @@ class GenreDaoTests {
     @Autowired
     GenreDaoJdbc genreDaoJdbc;
 
-    @Description("Создает жанр")
+    @DisplayName("Создает жанр")
     @Test
     public void createGenreTest() {
         genreDaoJdbc.createGenre(NOT_EXIST_GENRE);
         assertNotNull(genreDaoJdbc.getByName(NOT_EXIST_GENRE));
     }
 
-    @Description("Получает данные жанра по ID")
+    @DisplayName("Получает данные жанра по ID")
     @Test
     public void getByIdTest(){
         Genre genre = genreDaoJdbc.getById(1L);
@@ -39,7 +38,7 @@ class GenreDaoTests {
         assertEquals(genre.getGenreName(), EXIST_GENRE);
     }
 
-    @Description("Получает данные по имени жанра")
+    @DisplayName("Получает данные по имени жанра")
     @Test
     public void getByNameTest(){
         Genre genre = genreDaoJdbc.getByName(EXIST_GENRE);
