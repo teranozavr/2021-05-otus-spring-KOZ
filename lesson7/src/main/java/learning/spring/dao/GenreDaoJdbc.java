@@ -21,26 +21,26 @@ public class GenreDaoJdbc implements GenreDao{
 
     @Override
     public int createGenre(String name) {
-        String SQL = "insert into GENRE (ID, GENRE_NAME) values ((SELECT nextval('GENRE_ID')), :name);";
+        String sql = "insert into GENRE (ID, GENRE_NAME) values ((SELECT nextval('GENRE_ID')), :name);";
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name", name);
-        return namedParameterJdbcTemplate.update(SQL, paramMap);
+        return namedParameterJdbcTemplate.update(sql, paramMap);
     }
 
     @Override
     public Genre getById(long id) {
-        String SQL = "select * from genre where id = :id";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("id", id);
-        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new GenreDaoJdbc.GenreMapper());
+        String sql = "select id, genre_name from genre where id = :id";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new GenreDaoJdbc.GenreMapper());
     }
 
     @Override
     public Genre getByName(String name) {
-        String SQL = "select * from genre where genre_name = :name";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("name", name);
-        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, new GenreDaoJdbc.GenreMapper());
+        String sql = "select id, genre_name from genre where genre_name = :name";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("name", name);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new GenreDaoJdbc.GenreMapper());
     }
 
     private static class GenreMapper implements RowMapper<Genre> {
