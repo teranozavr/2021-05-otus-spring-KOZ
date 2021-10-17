@@ -1,7 +1,9 @@
-package learning.spring.service;
+package learning.spring.commands;
 
 import learning.spring.domain.Book;
-import org.apache.logging.log4j.message.StringFormattedMessage;
+import learning.spring.service.impl.AuthorServiceDefault;
+import learning.spring.service.impl.BookServiceDefault;
+import learning.spring.service.impl.GenreServiceDefault;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -13,15 +15,15 @@ import java.util.List;
 @ShellComponent
 public class Commands {
 
-    private final BookService bookService;
+    private final BookServiceDefault bookService;
 
-    private final AuthorService authorService;
+    private final AuthorServiceDefault authorService;
 
-    private final GenreService genreService;
+    private final GenreServiceDefault genreService;
 
     private List<Book> books;
 
-    public Commands(BookService bookService, AuthorService authorService, GenreService genreService) {
+    public Commands(BookServiceDefault bookService, AuthorServiceDefault authorService, GenreServiceDefault genreService) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;

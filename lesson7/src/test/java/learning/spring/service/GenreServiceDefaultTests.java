@@ -2,6 +2,7 @@ package learning.spring.service;
 
 import learning.spring.dao.GenreDaoJdbc;
 import learning.spring.domain.Genre;
+import learning.spring.service.impl.GenreServiceDefault;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Тесты GenreService")
 @ExtendWith(MockitoExtension.class)
-public class GenreServiceTests {
+public class GenreServiceDefaultTests {
     private static final Long EXIST_GENRE_ID = 1L;
     private static final String EXIST_GENRE_NAME = "Былина";
     private static final Genre EXIST_GENRE = new Genre(EXIST_GENRE_ID, EXIST_GENRE_NAME);
@@ -25,7 +26,7 @@ public class GenreServiceTests {
     @Mock
     private GenreDaoJdbc genreDaoJdbc;
     @InjectMocks
-    private GenreService genreService;
+    private GenreServiceDefault genreService;
 
     @DisplayName("Выводит название жанра")
     @Test

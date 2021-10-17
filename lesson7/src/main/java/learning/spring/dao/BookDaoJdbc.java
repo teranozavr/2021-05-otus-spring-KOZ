@@ -69,7 +69,7 @@ public class BookDaoJdbc implements BookDao {
         }
     }
     @Override
-    public int setTitle(Long bookId, String title){
+    public int updateTitleById(Long bookId, String title){
             String sql = "update book set title = :title where id = :bookId";
             MapSqlParameterSource namedParameters = new MapSqlParameterSource();
             namedParameters.addValue("title", title);

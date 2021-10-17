@@ -13,7 +13,7 @@ public interface BookDao {
 
     List<Book> getByTitle(String title);
 
-    int setTitle(Long bookId, String title);
+    int updateTitleById(Long bookId, String title);
 
     int createBook(String title, Long authorId, Long genreId);
 

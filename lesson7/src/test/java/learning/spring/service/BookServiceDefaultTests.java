@@ -4,6 +4,9 @@ import learning.spring.dao.*;
 import learning.spring.domain.Author;
 import learning.spring.domain.Book;
 import learning.spring.domain.Genre;
+import learning.spring.service.impl.AuthorServiceDefault;
+import learning.spring.service.impl.BookServiceDefault;
+import learning.spring.service.impl.GenreServiceDefault;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +27,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("Тесты BookService")
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTests {
+public class BookServiceDefaultTests {
 
     private static final String TEST_TITLE = "Spring. Все паттерны проектирования";
     private static final Long EXIST_BOOK_ID = 1L;
@@ -48,19 +51,19 @@ public class BookServiceTests {
     private AuthorDao authorDao;
 
     @Mock
-    private AuthorService authorService;
+    private AuthorServiceDefault authorService;
 
     @Mock
     GenreDao genreDao;
 
     @Mock
-    private GenreService genreService;
+    private GenreServiceDefault genreService;
 
     @Mock
     private BookDao bookDao;
 
     @InjectMocks
-    private BookService bookService;
+    private BookServiceDefault bookService;
 
     @BeforeEach
     private void init(){
@@ -129,9 +132,9 @@ public class BookServiceTests {
     @DisplayName("Устанавливает Title")
     @Test
     void setTitleTest(){
-        when(bookDao.setTitle(EXIST_BOOK_ID, EXIST_TITLE)).thenReturn(1);
+        when(bookDao.updateTitleById(EXIST_BOOK_ID, EXIST_TITLE)).thenReturn(1);
         bookService.setTitle(EXIST_BOOK_ID, EXIST_TITLE);
-        verify(bookDao, times(1)).setTitle(eq(EXIST_BOOK_ID), eq(EXIST_TITLE));
+        verify(bookDao, times(1)).updateTitleById(eq(EXIST_BOOK_ID), eq(EXIST_TITLE));
     }
 
     @DisplayName("Создает книгу")

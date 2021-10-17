@@ -2,6 +2,7 @@ package learning.spring.service;
 
 import learning.spring.dao.AuthorDao;
 import learning.spring.domain.Author;
+import learning.spring.service.impl.AuthorServiceDefault;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.times;
 
 @DisplayName("Тесты AuthorService")
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceTests {
+public class AuthorServiceDefaultTests {
 
     private static final String EXIST_NAME = "Роджер";
     private static final String EXIST_SUR_NAME = "Желязны";
@@ -31,7 +32,7 @@ public class AuthorServiceTests {
     @Mock
     private AuthorDao authorDao;
     @InjectMocks
-    private AuthorService authorService;
+    private AuthorServiceDefault authorService;
 
     @DisplayName("Выводит ФИО автора")
     @Test
