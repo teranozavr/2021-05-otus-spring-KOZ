@@ -51,7 +51,7 @@ public class BookServiceDefault implements BookService {
 
     @Override
     public String printBookInfo(String title, Long authorId, Long genreId){
-        Book book = bookDao.getByParams(title, authorId, genreId);
+        Book book = bookDao.getByParams(new Book(1L, authorId, genreId, title));
         return printBooksInfo(book);
     }
 
@@ -97,13 +97,14 @@ public class BookServiceDefault implements BookService {
 
     @Override
     public int createBook(String title, Long authorId, Long genreId){
-        return bookDao.createBook(title, authorId, genreId);
+        Book book = new Book(1L, authorId, genreId, title);
+        return bookDao.createBook(book);
     }
 
     @Override
     public String deleteBook(Book book){
         try{
-            bookDao.deleteBook(book.getId());
+            bookDao.deleteBook(book);
             return ("Удалена книга с Id: " + book.getId() + "\n");
         }
         catch (Exception e ){

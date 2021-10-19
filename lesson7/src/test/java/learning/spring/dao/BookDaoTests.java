@@ -26,7 +26,8 @@ class BookDaoTests {
     private static final Long EXIST_BOOK_ID = 1L;
     private static final Long EXIST_AUTHOR_ID = 2L;
     private static final Long EXIST_GENRE_ID = 5L;
-    private Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE);
+    private static final Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE);
+    private static final Book NOT_EXIST_BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, NOT_EXIST_TITLE);
     @Autowired
     BookDaoJdbc bookDaoJdbc;
 
@@ -49,7 +50,7 @@ class BookDaoTests {
     @DisplayName("Получает данные книги по title, authorId, genreId")
     @Test
     public void getByParamsTest(){
-        Book book = bookDaoJdbc.getByParams(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID);
+        Book book = bookDaoJdbc.getByParams(existBook);
         assertEquals(book.getTitle(), existBook.getTitle());
         assertEquals(book.getAuthorId(), existBook.getAuthorId());
         assertEquals(book.getGenreId(), existBook.getGenreId());
@@ -74,7 +75,7 @@ class BookDaoTests {
         int bookCount = bookDaoJdbc.count();
         List<Book> books = bookDaoJdbc.getByTitle(NOT_EXIST_TITLE);
         assertEquals(0, books.size());
-        int createStatus = bookDaoJdbc.createBook(NOT_EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID);
+        int createStatus = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
         books = bookDaoJdbc.getByTitle(NOT_EXIST_TITLE);
         Book book = books.get(0);
         assertEquals(1, createStatus);
@@ -84,7 +85,7 @@ class BookDaoTests {
         assertEquals(book.getAuthorId(), existBook.getAuthorId());
         assertEquals(book.getGenreId(), existBook.getGenreId());
         assertNotEquals(book.getId(), existBook.getId());
-        createStatus = bookDaoJdbc.createBook(NOT_EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID);
+        createStatus = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
         assertTrue(bookCount == bookDaoJdbc.count());
         assertEquals(-1, createStatus);
     }
@@ -94,7 +95,7 @@ class BookDaoTests {
     public void deleteBookTest(){
         int bookCount = bookDaoJdbc.count();
         assertNotNull(bookDaoJdbc.getById(EXIST_BOOK_ID));
-        bookDaoJdbc.deleteBook(EXIST_BOOK_ID);
+        bookDaoJdbc.deleteBook(existBook);
         assertTrue(-- bookCount ==  bookDaoJdbc.count());
         assertNull(bookDaoJdbc.getById(EXIST_BOOK_ID));
 

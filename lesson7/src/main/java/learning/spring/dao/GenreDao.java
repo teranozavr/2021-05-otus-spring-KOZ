@@ -3,9 +3,9 @@ package learning.spring.dao;
 import learning.spring.domain.Genre;
 
 public interface GenreDao {
-    int createGenre(String name);
+    int createGenre(Genre genre);
 
     Genre getById(long id);
 
-    Genre getByName(String name);
+    Genre getByName(Genre genre);
 }

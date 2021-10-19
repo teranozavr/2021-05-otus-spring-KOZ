@@ -20,10 +20,10 @@ public class GenreDaoJdbc implements GenreDao{
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public int createGenre(String name) {
+    public int createGenre(Genre genre) {
         String sql = "insert into GENRE (ID, GENRE_NAME) values ((SELECT nextval('GENRE_ID')), :name);";
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("name", name);
+        paramMap.put("name", genre.getGenreName());
         return namedParameterJdbcTemplate.update(sql, paramMap);
     }
 
@@ -36,10 +36,10 @@ public class GenreDaoJdbc implements GenreDao{
     }
 
     @Override
-    public Genre getByName(String name) {
+    public Genre getByName(Genre genre) {
         String sql = "select id, genre_name from genre where genre_name = :name";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("name", name);
+        namedParameters.addValue("name", genre.getGenreName());
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new GenreDaoJdbc.GenreMapper());
     }
 

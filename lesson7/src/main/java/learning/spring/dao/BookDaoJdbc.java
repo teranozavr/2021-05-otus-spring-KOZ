@@ -41,12 +41,12 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getByParams(String title, Long authorId, Long genreId) {
+    public Book getByParams(Book book) {
         String sql = "select id, title, author_id, genre_id from book where (title = :title and author_id = :authorId and genre_id = :genreId)";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("title", title);
-        ((MapSqlParameterSource) namedParameters).addValue("authorId", authorId);
-        ((MapSqlParameterSource) namedParameters).addValue("genreId", genreId);
+        ((MapSqlParameterSource) namedParameters).addValue("title", book.getTitle());
+        ((MapSqlParameterSource) namedParameters).addValue("authorId", book.getAuthorId());
+        ((MapSqlParameterSource) namedParameters).addValue("genreId", book.getGenreId());
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
     }
 
@@ -78,13 +78,13 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public int createBook(String title, Long authorId, Long genreId) {
+    public int createBook(Book book) {
         try {
             String sql = "insert into BOOK (ID, TITLE, AUTHOR_ID, GENRE_ID) values ((SELECT nextval('BOOK_ID')), :title, :authorId, :genreId);";
             Map<String, Object> paramMap = new HashMap<String, Object>();
-            paramMap.put("title", title);
-            paramMap.put("authorId", authorId);
-            paramMap.put("genreId", genreId);
+            paramMap.put("title", book.getTitle());
+            paramMap.put("authorId", book.getAuthorId());
+            paramMap.put("genreId", book.getGenreId());
             int createStatus = namedParameterJdbcTemplate.update(sql, paramMap);
 
             System.out.println("createStatus = "+ createStatus);
@@ -100,10 +100,10 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public int deleteBook(Long bookId) {
+    public int deleteBook(Book book) {
         String sql = "delete from BOOK where id = :id";
         Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("id", bookId);
+        paramMap.put("id", book.getId());
         return namedParameterJdbcTemplate.update(sql, paramMap);
     }
 }

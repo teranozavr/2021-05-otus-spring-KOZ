@@ -113,7 +113,7 @@ public class BookServiceDefaultTests {
         when(genreService.printGenreInfo(anyLong())).thenCallRealMethod();
         when(genreDao.getById(EXIST_GENRE_ID)).thenReturn(EXIST_GENRE);
         when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
-        when(bookDao.getByParams(EXIST_TITLE,EXIST_AUTHOR_ID,EXIST_GENRE_ID)).thenReturn(BOOK);
+        when(bookDao.getByParams(BOOK)).thenReturn(BOOK);
 
         assertEquals(bookService.printBookInfo(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
@@ -140,25 +140,25 @@ public class BookServiceDefaultTests {
     @DisplayName("Создает книгу")
     @Test
     void createBookTest(){
-        when(bookDao.createBook(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID)).thenReturn(1);
+        when(bookDao.createBook(BOOK)).thenReturn(1);
         assertEquals(bookService.createBook(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), 1);
-        verify(bookDao, times(1)).createBook(eq(EXIST_TITLE), eq(EXIST_AUTHOR_ID), eq(EXIST_GENRE_ID));
+        verify(bookDao, times(1)).createBook(eq(BOOK));
     }
 
     @DisplayName("Удаляет книгу")
     @Test
     void deleteBookTest(){
-        when(bookDao.deleteBook(EXIST_BOOK_ID)).thenReturn(1);
+        when(bookDao.deleteBook(BOOK)).thenReturn(1);
         assertEquals(bookService.deleteBook(BOOK), "Удалена книга с Id: 1\n");
-        verify(bookDao, times(1)).deleteBook(eq(EXIST_BOOK_ID));
+        verify(bookDao, times(1)).deleteBook(eq(BOOK));
     }
 
     @DisplayName("Удаляет книгу (негативный тест)")
     @Test
     void deleteBookNegativeTest(){
-        when(bookDao.deleteBook(EXIST_BOOK_ID)).thenThrow(new RuntimeException());
+        when(bookDao.deleteBook(BOOK)).thenThrow(new RuntimeException());
         assertEquals(bookService.deleteBook(BOOK), "Ошибка удаления книги. \n");
-        verify(bookDao, times(1)).deleteBook(eq(EXIST_BOOK_ID));
+        verify(bookDao, times(1)).deleteBook(eq(BOOK));
     }
 
     @DisplayName("Печатает информацию о книге")

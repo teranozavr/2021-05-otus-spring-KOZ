@@ -9,13 +9,13 @@ public interface BookDao {
 
     Book getById(long id);
 
-    Book getByParams(String title, Long authorId, Long genreID);
+    Book getByParams(Book book);
 
     List<Book> getByTitle(String title);
 
     int updateTitleById(Long bookId, String title);
 
-    int createBook(String title, Long authorId, Long genreId);
+    int createBook(Book book);
 
-    int deleteBook(Long bookId);
+    int deleteBook(Book book);
 }

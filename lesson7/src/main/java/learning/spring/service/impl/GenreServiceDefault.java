@@ -33,7 +33,7 @@ public class GenreServiceDefault implements GenreService {
     @Override
     public boolean isGenreExists(String name){
         try {
-           genreDao.getByName(name);
+           genreDao.getByName(new Genre(1L, name));
         }
         catch (EmptyResultDataAccessException e){
             return false;
@@ -44,7 +44,7 @@ public class GenreServiceDefault implements GenreService {
     @Override
     public void createGenre(String name){
         try {
-            genreDao.createGenre(name);
+            genreDao.createGenre(new Genre(1L, name));
         }
             catch (Exception e){
             System.out.println("Ошибка создания жанра. Жанр с данным именем уже сущетвует.");
@@ -54,7 +54,7 @@ public class GenreServiceDefault implements GenreService {
     @Override
     public Long getGenreId(String name){
         try {
-            Genre genre = genreDao.getByName(name);
+            Genre genre = genreDao.getByName(new Genre(1L, name));
             return genre.getId();
         }
             catch (EmptyResultDataAccessException e){

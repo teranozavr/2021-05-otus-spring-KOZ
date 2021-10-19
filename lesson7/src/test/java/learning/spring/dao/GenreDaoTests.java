@@ -17,8 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @JdbcTest
 @Import({GenreDaoJdbc.class})
 class GenreDaoTests {
-    private static final String EXIST_GENRE = "Былина";
-    private static final String NOT_EXIST_GENRE = "Небыль";
+    private static final String EXIST_GENRE_NAME = "Былина";
+
+    private static final Genre EXIST_GENRE = new Genre(1, "Былина");
+    private static final Genre NOT_EXIST_GENRE = new Genre(1, "Небыль");
+
+
 
     @Autowired
     GenreDaoJdbc genreDaoJdbc;
@@ -35,7 +39,7 @@ class GenreDaoTests {
     public void getByIdTest(){
         Genre genre = genreDaoJdbc.getById(1L);
         assertEquals(genre.getId(), 1L);
-        assertEquals(genre.getGenreName(), EXIST_GENRE);
+        assertEquals(genre.getGenreName(), EXIST_GENRE_NAME);
     }
 
     @DisplayName("Получает данные по имени жанра")
@@ -43,6 +47,6 @@ class GenreDaoTests {
     public void getByNameTest(){
         Genre genre = genreDaoJdbc.getByName(EXIST_GENRE);
         assertEquals(genre.getId(), 1L);
-        assertEquals(genre.getGenreName(), EXIST_GENRE);
+        assertEquals(genre.getGenreName(), EXIST_GENRE_NAME);
     }
 }
