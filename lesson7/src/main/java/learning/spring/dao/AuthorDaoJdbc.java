@@ -29,7 +29,7 @@ public class AuthorDaoJdbc implements AuthorDao{
 
     @Override
     public int createAuthor(Author author) {
-        String sql = "insert into author (id, first_name, surname, middle_name) values ((SELECT nextval('author_id')), :name, :surname, :middlename);";
+        String sql = "insert into author (first_name, surname, middle_name) values (:name, :surname, :middlename);";
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name", author.getFirstName());
         paramMap.put("surname", author.getSurName());

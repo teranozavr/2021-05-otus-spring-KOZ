@@ -80,7 +80,7 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int createBook(Book book) {
         try {
-            String sql = "insert into BOOK (ID, TITLE, AUTHOR_ID, GENRE_ID) values ((SELECT nextval('BOOK_ID')), :title, :authorId, :genreId);";
+            String sql = "insert into BOOK (TITLE, AUTHOR_ID, GENRE_ID) values (:title, :authorId, :genreId);";
             Map<String, Object> paramMap = new HashMap<String, Object>();
             paramMap.put("title", book.getTitle());
             paramMap.put("authorId", book.getAuthorId());

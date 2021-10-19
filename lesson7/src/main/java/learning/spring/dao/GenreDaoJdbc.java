@@ -21,7 +21,7 @@ public class GenreDaoJdbc implements GenreDao{
 
     @Override
     public int createGenre(Genre genre) {
-        String sql = "insert into GENRE (ID, GENRE_NAME) values ((SELECT nextval('GENRE_ID')), :name);";
+        String sql = "insert into GENRE (GENRE_NAME) values (:name);";
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("name", genre.getGenreName());
         return namedParameterJdbcTemplate.update(sql, paramMap);

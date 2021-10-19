@@ -16,6 +16,9 @@
         <addUniqueConstraint tableName="BOOK" columnNames="TITLE, AUTHOR_ID, GENRE_ID"/>
         <addNotNullConstraint tableName="BOOK" columnName="ID"/>
         <addPrimaryKey tableName="BOOK" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="BOOK_ID"
+                          tableName="BOOK"/>
 
         <createTable tableName="GENRE" remarks="Genre table">
             <column name="ID" type="BIGINT"/>
@@ -27,6 +30,9 @@
         <addUniqueConstraint tableName="GENRE" columnNames="GENRE_NAME"/>
         <addNotNullConstraint tableName="GENRE" columnName="ID"/>
         <addPrimaryKey tableName="GENRE" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="GENRE_ID"
+                          tableName="GENRE"/>
 
         <createTable tableName="AUTHOR" remarks="Author table">
             <column name="ID" type="BIGINT"/>
@@ -40,5 +46,8 @@
         <addUniqueConstraint tableName="AUTHOR" columnNames="FIRST_NAME, SURNAME, MIDDLE_NAME"/>
         <addNotNullConstraint tableName="AUTHOR" columnName="ID"/>
         <addPrimaryKey tableName="AUTHOR" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="AUTHOR_ID"
+                          tableName="AUTHOR"/>
     </changeSet>
 </databaseChangeLog>
