@@ -1,7 +1,9 @@
 package learning.spring.service.impl;
 
 import learning.spring.dao.BookDao;
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import learning.spring.domain.Genre;
 import learning.spring.service.BookService;
 import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.stereotype.Service;
@@ -36,9 +38,9 @@ public class BookServiceDefault implements BookService {
                 .append(book.getTitle())
                 .append("\n")
                 .append(" ")
-                .append(authorService.printAuthorInfo(book.getAuthorId()))
+                .append(authorService.printAuthorInfo(book.getAuthor().getId()))
                 .append(" ")
-                .append(genreService.printGenreInfo(book.getGenreId()))
+                .append(genreService.printGenreInfo(book.getGenre().getId()))
                 .append("\n");
         return sb.toString();
     }
@@ -50,8 +52,8 @@ public class BookServiceDefault implements BookService {
     }
 
     @Override
-    public String printBookInfo(String title, Long authorId, Long genreId){
-        Book book = bookDao.getByParams(new Book(1L, authorId, genreId, title));
+    public String printBookInfo(String title, Author author, Genre genre){
+        Book book = bookDao.getByParams(new Book(1L, author, genre, title));
         return printBooksInfo(book);
     }
 
@@ -96,8 +98,8 @@ public class BookServiceDefault implements BookService {
     }
 
     @Override
-    public int createBook(String title, Long authorId, Long genreId){
-        Book book = new Book(1L, authorId, genreId, title);
+    public int createBook(String title, Author author, Genre genre){
+        Book book = new Book(1L, author, genre, title);
         return bookDao.createBook(book);
     }
 

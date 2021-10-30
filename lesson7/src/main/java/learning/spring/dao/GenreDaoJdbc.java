@@ -40,6 +40,7 @@ public class GenreDaoJdbc implements GenreDao{
         String sql = "select id, genre_name from genre where genre_name = :name";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("name", genre.getGenreName());
+        namedParameters.addValue("id", genre.getId());
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new GenreDaoJdbc.GenreMapper());
     }
 

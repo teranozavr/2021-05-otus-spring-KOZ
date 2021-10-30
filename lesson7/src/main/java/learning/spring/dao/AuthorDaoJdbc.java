@@ -20,7 +20,7 @@ public class AuthorDaoJdbc implements AuthorDao{
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Author getById(long id) {
+    public Author getById(Long id) {
         String sql = "select id, first_name, surname, middle_name from author where id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("id", id);

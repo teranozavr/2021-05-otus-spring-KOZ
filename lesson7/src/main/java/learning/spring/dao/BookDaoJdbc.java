@@ -1,6 +1,9 @@
 package learning.spring.dao;
 
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import learning.spring.domain.Genre;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 public class BookDaoJdbc implements BookDao {
 
@@ -29,7 +33,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getById(long id) {
-        String sql = "select * from book where id = :id";
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where  b.id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("id", id);
         try {
@@ -42,17 +46,17 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getByParams(Book book) {
-        String sql = "select id, title, author_id, genre_id from book where (title = :title and author_id = :authorId and genre_id = :genreId)";
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where(title = :title and author_id = :authorId and genre_id = :genreId)";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("title", book.getTitle());
-        ((MapSqlParameterSource) namedParameters).addValue("authorId", book.getAuthorId());
-        ((MapSqlParameterSource) namedParameters).addValue("genreId", book.getGenreId());
+        ((MapSqlParameterSource) namedParameters).addValue("authorId", getAuthorId(book));
+        ((MapSqlParameterSource) namedParameters).addValue("genreId", getGenreId(book));
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
     }
 
     @Override
     public List<Book> getByTitle(String title) {
-        String sql = "select id, title, author_id, genre_id from book where title like :title";
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where title like :title";
         SqlParameterSource namedParameters = new MapSqlParameterSource();
         ((MapSqlParameterSource) namedParameters).addValue("title", "%"+title+"%");
             return namedParameterJdbcTemplate.query(sql, namedParameters, new BookMapper());
@@ -65,7 +69,11 @@ public class BookDaoJdbc implements BookDao {
             long authorId = resultSet.getLong("author_id");
             long genreId = resultSet.getLong("genre_id");
             String title = resultSet.getString("title");
-            return new Book(id, authorId, genreId, title);
+            String firstName = resultSet.getString("first_name");
+            String surName = resultSet.getString("surname");
+            String middleName = resultSet.getString("middle_name");
+            String genreName = resultSet.getString("genre_name");
+            return new Book(id, new Author(authorId, firstName, surName, middleName), new Genre(genreId, genreName), title);
         }
     }
     @Override
@@ -83,18 +91,16 @@ public class BookDaoJdbc implements BookDao {
             String sql = "insert into BOOK (TITLE, AUTHOR_ID, GENRE_ID) values (:title, :authorId, :genreId);";
             Map<String, Object> paramMap = new HashMap<String, Object>();
             paramMap.put("title", book.getTitle());
-            paramMap.put("authorId", book.getAuthorId());
-            paramMap.put("genreId", book.getGenreId());
+            paramMap.put("authorId", getAuthorId(book));
+            paramMap.put("genreId", getGenreId(book));
             int createStatus = namedParameterJdbcTemplate.update(sql, paramMap);
-
-            System.out.println("createStatus = "+ createStatus);
             return createStatus;
         }
         catch (Exception e){
             if(e instanceof DuplicateKeyException) {
                 return -1;
             }
-            System.out.println(e);
+            log.error(e.getMessage());
         }
         return -2;
     }
@@ -105,5 +111,13 @@ public class BookDaoJdbc implements BookDao {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("id", book.getId());
         return namedParameterJdbcTemplate.update(sql, paramMap);
+    }
+
+    private long getAuthorId(Book book){
+        return book.getAuthor().getId();
+    }
+
+    private long getGenreId(Book book){
+        return book.getGenre().getId();
     }
 }

@@ -1,5 +1,7 @@
 package learning.spring.service;
 
+import learning.spring.domain.Genre;
+
 public interface GenreService {
     String printGenreInfo(long id);
 
@@ -7,7 +9,7 @@ public interface GenreService {
 
     void createGenre(String name);
 
-    Long getGenreId(String name);
+    Genre getGenre(String name);
 
-    Long addGenreId(String name);
+    Genre addGenre(String name);
 }

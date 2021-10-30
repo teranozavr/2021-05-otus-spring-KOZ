@@ -1,6 +1,8 @@
 package learning.spring.commands;
 
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import learning.spring.domain.Genre;
 import learning.spring.service.impl.AuthorServiceDefault;
 import learning.spring.service.impl.BookServiceDefault;
 import learning.spring.service.impl.GenreServiceDefault;
@@ -50,15 +52,15 @@ public class Commands {
     @ShellMethod("Create book")
     public String createBook(
             @ShellOption({"title", "t"}) String title,
-            @ShellOption({"surname", "s"}) String surname,
             @ShellOption({"name", "n"}) String name,
             @ShellOption({"middlename", "m"}) String middleName,
-            @ShellOption({"genre", "g"}) String genre){
-        Long authorId = authorService.addAuthorId(name, surname, middleName);
-        Long genreId = genreService.addGenreId(genre);
-        int createStatus = bookService.createBook(title, authorId, genreId);
+            @ShellOption({"surname", "s"}) String surname,
+            @ShellOption({"genre", "g"}) String genreName){
+        Author author = authorService.addAuthor(name, surname, middleName);
+        Genre genre = genreService.addGenre(genreName);
+        int createStatus = bookService.createBook(title, author, genre);
         switch (createStatus) {
-            case 1: return bookService.printBookInfo(title, authorId, genreId);
+            case 1: return bookService.printBookInfo(title, author, genre);
             case -1: return "Книга с данными параметрами уже сущестует!";
             case -2: return "При создании книги произошла ошибка!";
         }

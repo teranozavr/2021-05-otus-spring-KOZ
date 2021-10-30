@@ -38,13 +38,17 @@ public class AuthorServiceDefaultTests {
     @Test
     public void printAuthorInfoTest(){
         when(authorDao.getById(anyLong())).thenReturn(EXIST_AUTHOR);
+
         assertEquals(authorService.printAuthorInfo(1L), "Автор: Роджер Джозеф Желязны\n");
     }
 
     @DisplayName("Создает автора")
     @Test
     public void createAuthorTest(){
+        when(authorDao.createAuthor(any(Author.class))).thenReturn(1);
+
         authorService.createAuthor(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME);
+
         verify(authorDao, times(1)).createAuthor(eq(EXIST_AUTHOR));
     }
 
@@ -53,7 +57,7 @@ public class AuthorServiceDefaultTests {
     public void getAuthorIdTest(){
         when(authorDao.getByName(eq(EXIST_AUTHOR))).thenReturn(EXIST_AUTHOR);
 
-        assertNotNull(authorService.getAuthorId(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
+        assertNotNull(authorService.getAuthor(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
         verify(authorDao, times(1)).getByName(eq(EXIST_AUTHOR));
     }
 
@@ -62,7 +66,7 @@ public class AuthorServiceDefaultTests {
     public void getAuthorIdNegativeTest(){
         when(authorDao.getByName(eq(NOT_EXIST_AUTHOR))).thenThrow(EmptyResultDataAccessException.class);
 
-        assertNull(authorService.getAuthorId(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
+        assertNull(authorService.getAuthor(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
 
         verify(authorDao, times(1)).getByName(eq(NOT_EXIST_AUTHOR));
     }
@@ -88,7 +92,8 @@ public class AuthorServiceDefaultTests {
     public void addAuthorIdTest(){
         when(authorDao.getByName(eq(EXIST_AUTHOR))).thenReturn(EXIST_AUTHOR);
 
-        assertEquals(authorService.addAuthorId(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME), EXIST_AUTHOR.getId());
+        assertEquals(EXIST_AUTHOR, authorService.addAuthor(EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME));
+
         verify(authorDao, times(0)).createAuthor(eq(EXIST_AUTHOR));
     }
 
@@ -97,7 +102,8 @@ public class AuthorServiceDefaultTests {
     public void addAuthorIdNegativeTest(){
         when(authorDao.getByName(eq(NOT_EXIST_AUTHOR))).thenThrow(EmptyResultDataAccessException.class);
 
-        assertNull(authorService.addAuthorId(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
+        assertNull(authorService.addAuthor(NOT_EXIST_NAME, NOT_EXIST_SUR_NAME, NOT_EXIST_MIDDLE_NAME));
+
         verify(authorDao, times(1)).createAuthor(eq(NOT_EXIST_AUTHOR));
 
     }

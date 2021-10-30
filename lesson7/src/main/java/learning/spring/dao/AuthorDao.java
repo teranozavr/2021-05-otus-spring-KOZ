@@ -5,7 +5,7 @@ import learning.spring.domain.Author;
 public interface AuthorDao {
     int createAuthor(Author author);
 
-    Author getById(long id);
+    Author getById(Long id);
 
     Author getByName(Author author);
 }

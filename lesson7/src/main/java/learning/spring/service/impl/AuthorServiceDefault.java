@@ -3,9 +3,11 @@ package learning.spring.service.impl;
 import learning.spring.dao.AuthorDao;
 import learning.spring.domain.Author;
 import learning.spring.service.AuthorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthorServiceDefault implements AuthorService {
     private final AuthorDao authorDao;
@@ -31,18 +33,18 @@ public class AuthorServiceDefault implements AuthorService {
     @Override
     public void createAuthor(String name, String surname, String middlename){
         try {
-            authorDao.createAuthor(getAuthor(name, surname, middlename));
+                Author author = new Author(1L, name, surname, middlename);
+                authorDao.createAuthor(author);
         }
         catch (Exception e){
-            System.out.println("Ошибка создания автора. Автор с данным ФИО уже сущетвует.");
+            log.error("Ошибка создания автора. Автор с данным ФИО уже сущетвует.");
         }
     }
 
     @Override
-    public Long getAuthorId(String name, String surname, String middlename){
+    public Author getAuthor(String name, String surname, String middlename){
         try{
-            Author author = authorDao.getByName(getAuthor(name, surname, middlename));
-            return author.getId();
+            return authorDao.getByName(new Author(1L, name, surname, middlename));
         }
         catch (EmptyResultDataAccessException e){
             return null;
@@ -52,24 +54,14 @@ public class AuthorServiceDefault implements AuthorService {
 
     @Override
     public boolean isAuthorExists(String name, String surname, String middlename){
-        try {
-            authorDao.getByName(getAuthor(name, surname, middlename));
-        }
-        catch (EmptyResultDataAccessException e){
-            return false;
-        }
-        return true;
+        return getAuthor(name, surname, middlename) != null ? true :false;
     }
 
     @Override
-    public Long addAuthorId(String name, String surname, String middlename){
+    public Author addAuthor(String name, String surname, String middlename){
         if(!isAuthorExists(name, surname, middlename)){
             createAuthor(name, surname, middlename);
         }
-        return getAuthorId(name, surname, middlename);
-    }
-
-    private Author getAuthor(String name, String surname, String middlenamme){
-        return new Author(1L, name, surname, middlenamme);
+        return getAuthor(name, surname, middlename);
     }
 }

@@ -52,10 +52,9 @@ public class GenreServiceDefault implements GenreService {
     }
 
     @Override
-    public Long getGenreId(String name){
+    public Genre getGenre(String name){
         try {
-            Genre genre = genreDao.getByName(new Genre(1L, name));
-            return genre.getId();
+            return genreDao.getByName(new Genre(1L, name));
         }
             catch (EmptyResultDataAccessException e){
             return null;
@@ -63,10 +62,10 @@ public class GenreServiceDefault implements GenreService {
     }
 
     @Override
-    public Long addGenreId(String name){
+    public Genre addGenre(String name){
         if(!isGenreExists(name)){
             createGenre(name);
         }
-        return getGenreId(name);
+        return getGenre(name);
     }
 }

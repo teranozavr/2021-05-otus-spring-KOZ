@@ -1,15 +1,14 @@
 package learning.spring.dao;
 
+import learning.spring.domain.Author;
 import learning.spring.domain.Book;
+import learning.spring.domain.Genre;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -24,10 +23,10 @@ class BookDaoTests {
     private static final String EXIST_TITLE = "Евгений Онегин";
     private static final String NOT_EXIST_TITLE = "Новый Евгений Онегин";
     private static final Long EXIST_BOOK_ID = 1L;
-    private static final Long EXIST_AUTHOR_ID = 2L;
-    private static final Long EXIST_GENRE_ID = 5L;
-    private static final Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE);
-    private static final Book NOT_EXIST_BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, NOT_EXIST_TITLE);
+    private static final Author EXIST_AUTHOR = new Author(2L, "Александр", "Пушкин", "Сергеевич");
+    private static final Genre EXIST_GENRE = new Genre(5L, "Роман");
+    private static final Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, EXIST_TITLE);
+    private static final Book NOT_EXIST_BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, NOT_EXIST_TITLE);
     @Autowired
     BookDaoJdbc bookDaoJdbc;
 
@@ -42,8 +41,8 @@ class BookDaoTests {
     public void getByIdTest(){
         Book book = bookDaoJdbc.getById(1L);
         assertEquals(book.getTitle(), existBook.getTitle());
-        assertEquals(book.getAuthorId(), existBook.getAuthorId());
-        assertEquals(book.getGenreId(), existBook.getGenreId());
+        assertEquals(book.getAuthor(), existBook.getAuthor());
+        assertEquals(book.getGenre(), existBook.getGenre());
         assertEquals(book.getId(), existBook.getId());
     }
 
@@ -52,8 +51,8 @@ class BookDaoTests {
     public void getByParamsTest(){
         Book book = bookDaoJdbc.getByParams(existBook);
         assertEquals(book.getTitle(), existBook.getTitle());
-        assertEquals(book.getAuthorId(), existBook.getAuthorId());
-        assertEquals(book.getGenreId(), existBook.getGenreId());
+        assertEquals(book.getAuthor(), existBook.getAuthor());
+        assertEquals(book.getGenre(), existBook.getGenre());
         assertEquals(book.getId(), existBook.getId());
     }
 
@@ -64,8 +63,8 @@ class BookDaoTests {
         assertEquals(1, books.size());
         Book book = books.get(0);
         assertEquals(book.getTitle(), existBook.getTitle());
-        assertEquals(book.getAuthorId(), existBook.getAuthorId());
-        assertEquals(book.getGenreId(), existBook.getGenreId());
+        assertEquals(book.getAuthor(), existBook.getAuthor());
+        assertEquals(book.getGenre(), existBook.getGenre());
         assertEquals(book.getId(), existBook.getId());
     }
 
@@ -82,8 +81,8 @@ class BookDaoTests {
         assertTrue(++bookCount == bookDaoJdbc.count());
         assertEquals(1, books.size());
         assertEquals(book.getTitle(), NOT_EXIST_TITLE);
-        assertEquals(book.getAuthorId(), existBook.getAuthorId());
-        assertEquals(book.getGenreId(), existBook.getGenreId());
+        assertEquals(book.getAuthor(), existBook.getAuthor());
+        assertEquals(book.getGenre(), existBook.getGenre());
         assertNotEquals(book.getId(), existBook.getId());
         createStatus = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
         assertTrue(bookCount == bookDaoJdbc.count());

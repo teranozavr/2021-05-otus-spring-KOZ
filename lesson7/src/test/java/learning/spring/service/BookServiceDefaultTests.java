@@ -31,7 +31,7 @@ public class BookServiceDefaultTests {
 
     private static final String TEST_TITLE = "Spring. Все паттерны проектирования";
     private static final Long EXIST_BOOK_ID = 1L;
-    private static final Long EXIST_AUTHOR_ID = 2L;
+    private static final Long EXIST_AUTHOR_ID = 1L;
     private static final Long EXIST_GENRE_ID = 5L;
     private static final String EXIST_TITLE = "Евгений Онегин";
 
@@ -42,10 +42,10 @@ public class BookServiceDefaultTests {
     private static final String EXIST_GENRE_NAME = "Роман";
     private static final Genre EXIST_GENRE = new Genre(EXIST_GENRE_ID, EXIST_GENRE_NAME);
 
-    private static final Book BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE);
-    private static final List<Book> BOOKS = new ArrayList<>();
     private static final Author EXIST_AUTHOR = new Author(1L, EXIST_NAME, EXIST_SUR_NAME, EXIST_MIDDLE_NAME);
 
+    private static final Book BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, EXIST_TITLE);
+    private static final List<Book> BOOKS = new ArrayList<>();
 
     @Mock
     private AuthorDao authorDao;
@@ -115,7 +115,7 @@ public class BookServiceDefaultTests {
         when(bookDao.getById(any(Long.class))).thenReturn(BOOK);
         when(bookDao.getByParams(BOOK)).thenReturn(BOOK);
 
-        assertEquals(bookService.printBookInfo(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), "Id: 1\n" +
+        assertEquals(bookService.printBookInfo(EXIST_TITLE, EXIST_AUTHOR, EXIST_GENRE), "Id: 1\n" +
                 " Название: Евгений Онегин\n" +
                 " Автор: Александр Сергеевич Пушкин\n" +
                 " Жанр: Роман\n" +
@@ -141,7 +141,7 @@ public class BookServiceDefaultTests {
     @Test
     void createBookTest(){
         when(bookDao.createBook(BOOK)).thenReturn(1);
-        assertEquals(bookService.createBook(EXIST_TITLE, EXIST_AUTHOR_ID, EXIST_GENRE_ID), 1);
+        assertEquals(bookService.createBook(EXIST_TITLE, EXIST_AUTHOR, EXIST_GENRE), 1);
         verify(bookDao, times(1)).createBook(eq(BOOK));
     }
 
@@ -180,8 +180,8 @@ public class BookServiceDefaultTests {
     @Test
     void printSelectedBooksInfoMultyBookTest(){
         List<Book> books = new ArrayList<>();
-        books.add(new Book(1L, EXIST_AUTHOR_ID, EXIST_GENRE_ID, TEST_TITLE));
-        books.add(new Book(EXIST_BOOK_ID, EXIST_AUTHOR_ID, EXIST_GENRE_ID, EXIST_TITLE));
+        books.add(new Book(1L, EXIST_AUTHOR, EXIST_GENRE, TEST_TITLE));
+        books.add(new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, EXIST_TITLE));
 
         when(authorService.printAuthorInfo(anyLong())).thenCallRealMethod();
         when(authorDao.getById(EXIST_AUTHOR_ID)).thenReturn(EXIST_AUTHOR);

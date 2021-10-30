@@ -81,7 +81,7 @@ public class GenreServiceDefaultTests {
     public void getGenreIdTest(){
         when(genreDaoJdbc.getByName(eq(EXIST_GENRE))).thenReturn(EXIST_GENRE);
 
-        assertEquals(genreService.getGenreId(EXIST_GENRE_NAME), EXIST_GENRE.getId());
+        assertEquals(genreService.getGenre(EXIST_GENRE_NAME), EXIST_GENRE);
     }
 
     @DisplayName("Полуает ID жанра по имени (негативный тест)")
@@ -89,7 +89,7 @@ public class GenreServiceDefaultTests {
     public void getGenreIdNegativeTest(){
         when(genreDaoJdbc.getByName(any(Genre.class))).thenThrow(EmptyResultDataAccessException.class);
 
-        assertNull(genreService.getGenreId(NOT_EXIST_GENRE_NAME));
+        assertNull(genreService.getGenre(NOT_EXIST_GENRE_NAME));
     }
 
     @DisplayName("Получает Id существующего жанра")
@@ -97,7 +97,7 @@ public class GenreServiceDefaultTests {
     public void addGenreIdTest(){
         when(genreDaoJdbc.getByName(eq(EXIST_GENRE))).thenReturn(EXIST_GENRE);
 
-        assertEquals(genreService.addGenreId(EXIST_GENRE_NAME), EXIST_GENRE.getId());
+        assertEquals(genreService.addGenre(EXIST_GENRE_NAME), EXIST_GENRE);
         verify(genreDaoJdbc, times(0)).createGenre(eq(EXIST_GENRE));
     }
 
@@ -106,7 +106,7 @@ public class GenreServiceDefaultTests {
     public void addGenreIdNegativeTest(){
         when(genreDaoJdbc.getByName(any(Genre.class))).thenThrow(EmptyResultDataAccessException.class);
 
-        assertNull(genreService.addGenreId(NOT_EXIST_GENRE_NAME));
+        assertNull(genreService.addGenre(NOT_EXIST_GENRE_NAME));
         verify(genreDaoJdbc, times(1)).createGenre(eq(NOT_EXIST_GENRE));
     }
 }
