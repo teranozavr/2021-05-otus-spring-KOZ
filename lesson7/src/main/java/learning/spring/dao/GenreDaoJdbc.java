@@ -13,8 +13,11 @@ import java.util.Map;
 @Repository
 public class GenreDaoJdbc implements GenreDao{
 
-    @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    GenreDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
 
     @Override
     public int createGenre(Genre genre) {

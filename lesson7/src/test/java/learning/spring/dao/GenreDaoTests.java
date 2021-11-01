@@ -22,10 +22,8 @@ class GenreDaoTests {
     private static final Genre EXIST_GENRE = new Genre(1, "Былина");
     private static final Genre NOT_EXIST_GENRE = new Genre(1, "Небыль");
 
-
-
     @Autowired
-    GenreDaoJdbc genreDaoJdbc;
+    private GenreDaoJdbc genreDaoJdbc;
 
     @DisplayName("Создает жанр")
     @Test

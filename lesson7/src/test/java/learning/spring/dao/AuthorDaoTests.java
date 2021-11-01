@@ -25,7 +25,7 @@ class AuthorDaoTests {
     private static final String EXIST_MIDDLE_NAME = "Джозеф";
 
     @Autowired
-    AuthorDaoJdbc authorDaoJdbc;
+    private AuthorDaoJdbc authorDaoJdbc;
 
     @DisplayName("Создает автора")
     @Test

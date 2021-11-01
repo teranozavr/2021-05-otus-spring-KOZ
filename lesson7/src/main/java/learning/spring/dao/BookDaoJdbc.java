@@ -22,7 +22,11 @@ import java.util.Map;
 @Repository
 public class BookDaoJdbc implements BookDao {
 
-    @Autowired NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    BookDaoJdbc(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
 
     @Override
     public int count() {

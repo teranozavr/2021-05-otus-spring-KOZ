@@ -28,7 +28,7 @@ class BookDaoTests {
     private static final Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, EXIST_TITLE);
     private static final Book NOT_EXIST_BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, NOT_EXIST_TITLE);
     @Autowired
-    BookDaoJdbc bookDaoJdbc;
+    private BookDaoJdbc bookDaoJdbc;
 
     @DisplayName("Выводит количество книг")
     @Test
