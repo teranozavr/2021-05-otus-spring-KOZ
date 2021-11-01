@@ -49,5 +49,25 @@
         <addDefaultValue  columnName="ID"
                           defaultValueSequenceNext="AUTHOR_ID"
                           tableName="AUTHOR"/>
+
+        <addForeignKeyConstraint  baseColumnNames="AUTHOR_ID"
+                                  baseTableName="BOOK"
+                                  constraintName="FK_BOOK_AUTHOR"
+                                  deferrable="true"
+                                  initiallyDeferred="true"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="ID"
+                                  referencedTableName="AUTHOR"/>
+
+        <addForeignKeyConstraint  baseColumnNames="GENRE_ID"
+                                  baseTableName="BOOK"
+                                  constraintName="FK_BOOK_GENRE"
+                                  deferrable="true"
+                                  initiallyDeferred="true"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="ID"
+                                  referencedTableName="GENRE"/>
     </changeSet>
 </databaseChangeLog>

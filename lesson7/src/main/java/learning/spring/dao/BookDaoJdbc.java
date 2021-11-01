@@ -108,7 +108,7 @@ public class BookDaoJdbc implements BookDao {
             if(e instanceof DuplicateKeyException) {
                 log.error("Книга с данными параметрами уже сущестует!");
             }
-            log.error("При создании книги произошла ошибка! {}", e.getMessage());
+            else log.error("При создании книги произошла ошибка! {}", e.getMessage());
         }
         return null;
     }
