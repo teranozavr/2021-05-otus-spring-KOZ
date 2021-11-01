@@ -54,7 +54,7 @@ public class AuthorServiceDefault implements AuthorService {
 
     @Override
     public boolean isAuthorExists(String name, String surname, String middlename){
-        return getAuthor(name, surname, middlename) != null ? true :false;
+        return getAuthor(name, surname, middlename) != null;
     }
 
     @Override
