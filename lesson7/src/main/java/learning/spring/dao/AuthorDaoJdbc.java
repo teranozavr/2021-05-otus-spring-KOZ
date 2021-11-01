@@ -22,8 +22,8 @@ public class AuthorDaoJdbc implements AuthorDao{
     @Override
     public Author getById(Long id) {
         String sql = "select id, first_name, surname, middle_name from author where id = :id";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("id", id);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new AuthorDaoJdbc.AuthorMapper());
     }
 

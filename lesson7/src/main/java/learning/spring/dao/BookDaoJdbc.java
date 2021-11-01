@@ -34,8 +34,8 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getById(long id) {
         String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where  b.id = :id";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("id", id);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("id", id);
         try {
             return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
         }
@@ -47,18 +47,18 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getByParams(Book book) {
         String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where(title = :title and author_id = :authorId and genre_id = :genreId)";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("title", book.getTitle());
-        ((MapSqlParameterSource) namedParameters).addValue("authorId", getAuthorId(book));
-        ((MapSqlParameterSource) namedParameters).addValue("genreId", getGenreId(book));
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("title", book.getTitle());
+        namedParameters.addValue("authorId", getAuthorId(book));
+        namedParameters.addValue("genreId", getGenreId(book));
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
     }
 
     @Override
     public List<Book> getByTitle(String title) {
         String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where title like :title";
-        SqlParameterSource namedParameters = new MapSqlParameterSource();
-        ((MapSqlParameterSource) namedParameters).addValue("title", "%"+title+"%");
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("title", "%"+title+"%");
             return namedParameterJdbcTemplate.query(sql, namedParameters, new BookMapper());
     }
 
