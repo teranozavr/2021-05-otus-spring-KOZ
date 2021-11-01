@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +32,14 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getById(long id) {
-        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where  b.id = :id";
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("id", id);
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, " +
+                "a.id, a.first_name , a.middle_name, a.surname, " +
+                "g.id, g.genre_name from book b " +
+                "left join author a on b.author_id = a.id " +
+                "left join genre g on b.genre_id = g.id " +
+                "where  b.id = :id";
         try {
-            return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
+            return namedParameterJdbcTemplate.queryForObject(sql, Map.of("id", id), new BookMapper());
         }
         catch (EmptyResultDataAccessException e){
             return null;
@@ -46,20 +48,26 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getByParams(Book book) {
-        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where(title = :title and author_id = :authorId and genre_id = :genreId)";
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("title", book.getTitle());
-        namedParameters.addValue("authorId", getAuthorId(book));
-        namedParameters.addValue("genreId", getGenreId(book));
-        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new BookMapper());
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, " +
+                "a.id, a.first_name , a.middle_name, a.surname, " +
+                "g.id, g.genre_name from book b " +
+                "left join author a on b.author_id = a.id " +
+                "left join genre g on b.genre_id = g.id " +
+                "where(title = :title and author_id = :authorId and genre_id = :genreId)";
+        return namedParameterJdbcTemplate.queryForObject(sql, Map.of("title", book.getTitle(),
+                "authorId", getAuthorId(book),
+                "genreId", getGenreId(book)), new BookMapper());
     }
 
     @Override
     public List<Book> getByTitle(String title) {
-        String sql = "select b.id, b.title, b.author_id, b.genre_id, a.id, a.first_name , a.middle_name, a.surname, g.id, g.genre_name from book b join author a on b.author_id = a.id join genre g on b.genre_id = g.id where title like :title";
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("title", "%"+title+"%");
-            return namedParameterJdbcTemplate.query(sql, namedParameters, new BookMapper());
+        String sql = "select b.id, b.title, b.author_id, b.genre_id, " +
+                "a.id, a.first_name , a.middle_name, a.surname, " +
+                "g.id, g.genre_name from book b " +
+                "left join author a on b.author_id = a.id " +
+                "left join genre g on b.genre_id = g.id " +
+                "where title like :title";
+            return namedParameterJdbcTemplate.query(sql, Map.of("title", "%"+title+"%"), new BookMapper());
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -79,21 +87,17 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int updateTitleById(Long bookId, String title){
             String sql = "update book set title = :title where id = :bookId";
-            MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-            namedParameters.addValue("title", title);
-            namedParameters.addValue("bookId", bookId);
-            return namedParameterJdbcTemplate.update(sql, namedParameters);
+            return namedParameterJdbcTemplate.update(sql, Map.of("title", title,
+                    "bookId", bookId));
     }
 
     @Override
     public int createBook(Book book) {
         try {
             String sql = "insert into BOOK (TITLE, AUTHOR_ID, GENRE_ID) values (:title, :authorId, :genreId);";
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("title", book.getTitle());
-            paramMap.put("authorId", getAuthorId(book));
-            paramMap.put("genreId", getGenreId(book));
-            int createStatus = namedParameterJdbcTemplate.update(sql, paramMap);
+            int createStatus = namedParameterJdbcTemplate.update(sql, Map.of("title", book.getTitle(),
+                    "authorId", getAuthorId(book),
+                    "genreId", getGenreId(book)));
             return createStatus;
         }
         catch (Exception e){
@@ -108,9 +112,7 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int deleteBook(Book book) {
         String sql = "delete from BOOK where id = :id";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("id", book.getId());
-        return namedParameterJdbcTemplate.update(sql, paramMap);
+        return namedParameterJdbcTemplate.update(sql, Map.of("id", book.getId()));
     }
 
     private long getAuthorId(Book book){
