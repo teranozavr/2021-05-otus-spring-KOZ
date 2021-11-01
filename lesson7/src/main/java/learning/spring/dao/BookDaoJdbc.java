@@ -89,7 +89,7 @@ public class BookDaoJdbc implements BookDao {
     public int createBook(Book book) {
         try {
             String sql = "insert into BOOK (TITLE, AUTHOR_ID, GENRE_ID) values (:title, :authorId, :genreId);";
-            Map<String, Object> paramMap = new HashMap<String, Object>();
+            Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("title", book.getTitle());
             paramMap.put("authorId", getAuthorId(book));
             paramMap.put("genreId", getGenreId(book));
@@ -108,7 +108,7 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public int deleteBook(Book book) {
         String sql = "delete from BOOK where id = :id";
-        Map<String, Object> paramMap = new HashMap<String, Object>();
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("id", book.getId());
         return namedParameterJdbcTemplate.update(sql, paramMap);
     }

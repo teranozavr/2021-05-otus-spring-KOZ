@@ -30,7 +30,7 @@ public class AuthorDaoJdbc implements AuthorDao{
     @Override
     public int createAuthor(Author author) {
         String sql = "insert into author (first_name, surname, middle_name) values (:name, :surname, :middlename);";
-        Map<String, Object> paramMap = new HashMap<String, Object>();
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", author.getFirstName());
         paramMap.put("surname", author.getSurName());
         paramMap.put("middlename", author.getMiddleName());
