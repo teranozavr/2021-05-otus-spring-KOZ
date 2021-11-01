@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class GenreServiceDefault implements GenreService {
     private final GenreDao genreDao;
-    private Genre genre;
 
     public GenreServiceDefault(GenreDao genreDao) {
         this.genreDao = genreDao;
@@ -17,6 +16,7 @@ public class GenreServiceDefault implements GenreService {
 
     @Override
     public String printGenreInfo(long id){
+        Genre genre;
         try {
             genre = genreDao.getById(id);
         }
