@@ -23,10 +23,11 @@ class BookDaoTests {
     private static final String EXIST_TITLE = "Евгений Онегин";
     private static final String NOT_EXIST_TITLE = "Новый Евгений Онегин";
     private static final Long EXIST_BOOK_ID = 1L;
+    private static final Long  NOT_EXIST_BOOK_ID = 4L;
     private static final Author EXIST_AUTHOR = new Author(2L, "Александр", "Пушкин", "Сергеевич");
     private static final Genre EXIST_GENRE = new Genre(5L, "Роман");
     private static final Book existBook = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, EXIST_TITLE);
-    private static final Book NOT_EXIST_BOOK = new Book(EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, NOT_EXIST_TITLE);
+    private static final Book NOT_EXIST_BOOK = new Book(NOT_EXIST_BOOK_ID, EXIST_AUTHOR, EXIST_GENRE, NOT_EXIST_TITLE);
     @Autowired
     private BookDaoJdbc bookDaoJdbc;
 
@@ -74,19 +75,19 @@ class BookDaoTests {
         int bookCount = bookDaoJdbc.count();
         List<Book> books = bookDaoJdbc.getByTitle(NOT_EXIST_TITLE);
         assertEquals(0, books.size());
-        int createStatus = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
+        Long bookId = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
         books = bookDaoJdbc.getByTitle(NOT_EXIST_TITLE);
         Book book = books.get(0);
-        assertEquals(1, createStatus);
+        assertEquals(NOT_EXIST_BOOK_ID, bookId);
         assertTrue(++bookCount == bookDaoJdbc.count());
         assertEquals(1, books.size());
         assertEquals(book.getTitle(), NOT_EXIST_TITLE);
         assertEquals(book.getAuthor(), existBook.getAuthor());
         assertEquals(book.getGenre(), existBook.getGenre());
         assertNotEquals(book.getId(), existBook.getId());
-        createStatus = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
+        bookId = bookDaoJdbc.createBook(NOT_EXIST_BOOK);
         assertTrue(bookCount == bookDaoJdbc.count());
-        assertEquals(-1, createStatus);
+        assertEquals(null, bookId);
     }
 
     @DisplayName("Удаляет книгу по ID")

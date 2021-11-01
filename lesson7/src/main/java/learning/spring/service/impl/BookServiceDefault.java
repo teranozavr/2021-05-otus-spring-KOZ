@@ -98,7 +98,7 @@ public class BookServiceDefault implements BookService {
     }
 
     @Override
-    public int createBook(String title, Author author, Genre genre){
+    public Long createBook(String title, Author author, Genre genre){
         Book book = new Book(1L, author, genre, title);
         return bookDao.createBook(book);
     }

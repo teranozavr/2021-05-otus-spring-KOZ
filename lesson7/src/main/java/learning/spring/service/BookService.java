@@ -21,7 +21,7 @@ public interface BookService {
 
     void setTitle(Long bookId, String title);
 
-    int createBook(String title, Author author, Genre genre);
+    Long createBook(String title, Author author, Genre genre);
 
     String deleteBook(Book book);
 

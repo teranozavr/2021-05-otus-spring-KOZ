@@ -58,13 +58,8 @@ public class Commands {
             @ShellOption({"genre", "g"}) String genreName){
         Author author = authorService.addAuthor(name, surname, middleName);
         Genre genre = genreService.addGenre(genreName);
-        int createStatus = bookService.createBook(title, author, genre);
-        switch (createStatus) {
-            case 1: return bookService.printBookInfo(title, author, genre);
-            case -1: return "Книга с данными параметрами уже сущестует!";
-            case -2: return "При создании книги произошла ошибка!";
-        }
-        return null;
+        Long bookId = bookService.createBook(title, author, genre);
+        return bookId != null ? bookService.printBookInfo(bookId) : null;
     }
 
     //select-book --id 4

@@ -140,7 +140,7 @@ public class BookServiceDefaultTests {
     @DisplayName("Создает книгу")
     @Test
     void createBookTest(){
-        when(bookDao.createBook(BOOK)).thenReturn(1);
+        when(bookDao.createBook(BOOK)).thenReturn(EXIST_BOOK_ID);
         assertEquals(bookService.createBook(EXIST_TITLE, EXIST_AUTHOR, EXIST_GENRE), 1);
         verify(bookDao, times(1)).createBook(eq(BOOK));
     }

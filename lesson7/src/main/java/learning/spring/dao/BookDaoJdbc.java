@@ -96,21 +96,21 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public int createBook(Book book) {
+    public Long createBook(Book book) {
         try {
             String sql = "insert into BOOK (TITLE, AUTHOR_ID, GENRE_ID) values (:title, :authorId, :genreId);";
-            int createStatus = namedParameterJdbcTemplate.update(sql, Map.of("title", book.getTitle(),
+            namedParameterJdbcTemplate.update(sql, Map.of("title", book.getTitle(),
                     "authorId", getAuthorId(book),
                     "genreId", getGenreId(book)));
-            return createStatus;
+            return getByParams(book).getId();
         }
         catch (Exception e){
             if(e instanceof DuplicateKeyException) {
-                return -1;
+                log.error("Книга с данными параметрами уже сущестует!");
             }
-            log.error(e.getMessage());
+            log.error("При создании книги произошла ошибка! {}", e.getMessage());
         }
-        return -2;
+        return null;
     }
 
     @Override
