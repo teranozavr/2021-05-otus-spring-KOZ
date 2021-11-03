@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="Ilya">
+        <createTable tableName="BOOK" remarks="Books table">
+            <column name="ID" type="BIGINT"/>
+            <column name="TITLE" type="VARCHAR(64)"/>
+            <column name="AUTHOR_ID" type="BIGINT"/>
+            <column name="GENRE_ID" type="BIGINT"/>
+        </createTable>
+
+        <createSequence sequenceName="BOOK_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="BOOK" columnNames="TITLE, AUTHOR_ID, GENRE_ID"/>
+        <addNotNullConstraint tableName="BOOK" columnName="ID"/>
+        <addPrimaryKey tableName="BOOK" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="BOOK_ID"
+                          tableName="BOOK"/>
+
+        <createTable tableName="GENRE" remarks="Genre table">
+            <column name="ID" type="BIGINT"/>
+            <column name="GENRE_NAME" type="VARCHAR(32)"/>
+        </createTable>
+
+        <createSequence sequenceName="GENRE_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="GENRE" columnNames="ID"/>
+        <addUniqueConstraint tableName="GENRE" columnNames="GENRE_NAME"/>
+        <addNotNullConstraint tableName="GENRE" columnName="ID"/>
+        <addPrimaryKey tableName="GENRE" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="GENRE_ID"
+                          tableName="GENRE"/>
+
+        <createTable tableName="AUTHOR" remarks="Author table">
+            <column name="ID" type="BIGINT"/>
+            <column name="FIRST_NAME" type="VARCHAR(32)"/>
+            <column name="SURNAME" type="VARCHAR(32)"/>
+            <column name="MIDDLE_NAME" type="VARCHAR(32)"/>
+        </createTable>
+
+        <createSequence sequenceName="AUTHOR_ID" cycle="false"></createSequence>
+        <addUniqueConstraint tableName="AUTHOR" columnNames="ID"/>
+        <addUniqueConstraint tableName="AUTHOR" columnNames="FIRST_NAME, SURNAME, MIDDLE_NAME"/>
+        <addNotNullConstraint tableName="AUTHOR" columnName="ID"/>
+        <addPrimaryKey tableName="AUTHOR" columnNames="ID"/>
+        <addDefaultValue  columnName="ID"
+                          defaultValueSequenceNext="AUTHOR_ID"
+                          tableName="AUTHOR"/>
+
+        <addForeignKeyConstraint  baseColumnNames="AUTHOR_ID"
+                                      baseTableName="BOOK"
+                                      constraintName="FK_BOOK_AUTHOR"
+                                      onDelete="CASCADE"
+                                      onUpdate="RESTRICT"
+                                      referencedColumnNames="ID"
+                                      referencedTableName="AUTHOR"/>
+
+        <addForeignKeyConstraint  baseColumnNames="GENRE_ID"
+                                  baseTableName="BOOK"
+                                  constraintName="FK_BOOK_GENRE"
+                                  onDelete="CASCADE"
+                                  onUpdate="RESTRICT"
+                                  referencedColumnNames="ID"
+                                  referencedTableName="GENRE"/>
+    </changeSet>
+</databaseChangeLog>
