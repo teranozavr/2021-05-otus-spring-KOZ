@@ -16,4 +16,12 @@ public class QuestionPrinter {
             }
         }
     }
+
+    public static void printQuestion(Question question){
+        System.out.println(question.getQuestionText());
+        for (Answer a : question.getAnswers()
+        ) {
+            System.out.println("-"+a.getAnswerText());
+        }
+    }
 }

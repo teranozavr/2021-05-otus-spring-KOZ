@@ -19,11 +19,17 @@ public class StringProcessor {
     private static List<Answer> getAnswerList(String str){
         List<Answer> answerList = new ArrayList<>();
         boolean isAnswer = false;
+        int answerNumber = 0;
         for (String s : str.split(";")) {
-            if(isAnswer) answerList.add(new Answer(s));
+            if(isAnswer) answerList.add(new Answer(s.substring(1), isRightAnswer(s), answerNumber));
             isAnswer = true;
+            answerNumber++;
         }
         return answerList;
+    }
+
+    private static Boolean isRightAnswer(String str){
+        return str.substring(0, 1).contains("+");
     }
 
     public static Question getQuestion(String str){

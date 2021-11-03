@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:application.yml")
+@PropertySource("classpath:application.properties")
 public class DaoConfig {
 
-    @Value( "${location}" )
+    @Value("${questions.location}")
     private String location;
 
     @Bean

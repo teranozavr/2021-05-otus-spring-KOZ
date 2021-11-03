@@ -1,5 +1,6 @@
 package learning.spring.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -18,6 +19,14 @@ public class Question {
 
     public List<Answer> getAnswers(){
         return answers;
+    }
+
+    public Integer getRightAnswerNumber() {
+        for (Answer a: answers
+             ) {
+            if(a.isRight()) return a.getAnswerNumber();
+        }
+        return null;
     }
 
 }

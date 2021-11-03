@@ -19,8 +19,4 @@ public class QuestionServiceImpl implements QuestionService {
         return questionDao.getAll();
     }
 
-    public void printAllQuestions(){
-        printQuestionarie(getAllQuestions());
-    }
-
 }
