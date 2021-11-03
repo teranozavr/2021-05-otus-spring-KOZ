@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${library.pgnodes}/${library.pgdb}?targetServerType=primary&currentSchema=${library.pgschema}
+    username: ${library.pguser}
+    password: ${library.pgpwd}
+    sql-script-encoding: UTF-8
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+library:
+  pgnodes: localhost:5432
+  pgdb: library
+  pguser: postgres
+  pgpwd: mysecretpassword
+  pgschema: v3
+
+logging:
+  level:
+    root: ERROR
