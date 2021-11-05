@@ -3,14 +3,14 @@ package learning.spring.dao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class QuestionDaoImplTests {
-    private QuestionDaoImpl questionDao;
+public class QuestionDaoCsvTests {
+    private QuestionDaoCsv questionDao;
     private static final String location = "questions.csv";
     private static final String wrongLocation = "wrong.csv";
 
     @Test
     public void questionDaoImplConstructorTest(){
-        questionDao = new QuestionDaoImpl(location);
+        questionDao = new QuestionDaoCsv(location);
         Assertions.assertNotNull(questionDao.getAll());
         Assertions.assertEquals(5, questionDao.getAll().size());
     }
@@ -18,7 +18,7 @@ public class QuestionDaoImplTests {
     @Test
     public void nullTest(){
         try {
-            questionDao = new QuestionDaoImpl(wrongLocation);
+            questionDao = new QuestionDaoCsv(wrongLocation);
         }
         catch (Exception ex){
             Assertions.assertEquals(ex.getClass(), NullPointerException.class);

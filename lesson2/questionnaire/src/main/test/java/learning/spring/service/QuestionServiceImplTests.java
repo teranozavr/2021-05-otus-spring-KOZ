@@ -1,7 +1,6 @@
 package learning.spring.service;
 
-import learning.spring.dao.QuestionDao;
-import learning.spring.dao.QuestionDaoImpl;
+import learning.spring.dao.QuestionDaoCsv;
 import learning.spring.domain.Answer;
 import learning.spring.domain.Question;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +18,7 @@ public class QuestionServiceImplTests {
     private QuestionServiceImpl questionService;
 
     @Mock
-    QuestionDaoImpl questionDao;
+    QuestionDaoCsv questionDao;
 
     @BeforeEach
     public void init(){

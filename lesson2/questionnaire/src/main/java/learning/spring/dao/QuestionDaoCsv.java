@@ -13,11 +13,11 @@ import static learning.spring.helpers.StringProcessor.getStringList;
 import static learning.spring.helpers.ResourceFileReader.*;
 
 @Slf4j
-public class QuestionDaoImpl implements QuestionDao {
+public class QuestionDaoCsv implements QuestionDao {
     private final List<Question> questionList;
     private final String location;
 
-    public QuestionDaoImpl(String location){
+    public QuestionDaoCsv(String location){
         this.location = location;
         questionList = new ArrayList<>();
         try {
