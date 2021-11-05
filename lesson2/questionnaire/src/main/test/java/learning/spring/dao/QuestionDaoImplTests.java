@@ -3,7 +3,6 @@ package learning.spring.dao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 public class QuestionDaoImplTests {
     private QuestionDaoImpl questionDao;
     private static final String location = "questions.csv";
