@@ -9,14 +9,14 @@ public class QuestionDaoImplTests {
     private static final String wrongLocation = "wrong.csv";
 
     @Test
-    public void QuestionDaoImplConstructorTest(){
+    public void questionDaoImplConstructorTest(){
         questionDao = new QuestionDaoImpl(location);
         Assertions.assertNotNull(questionDao.getAll());
         Assertions.assertEquals(5, questionDao.getAll().size());
     }
 
     @Test
-    public void NullTest(){
+    public void nullTest(){
         try {
             questionDao = new QuestionDaoImpl(wrongLocation);
         }
