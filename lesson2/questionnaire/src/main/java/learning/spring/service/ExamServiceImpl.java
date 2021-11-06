@@ -16,9 +16,12 @@ public class ExamServiceImpl implements ExamService{
 
     private final ExamResult examResult;
 
-    public ExamServiceImpl(Exam exam, ExamResult examResult){
+    private final IOServiceConsole ioServiceConsole;
+
+    public ExamServiceImpl(Exam exam, ExamResult examResult, IOServiceConsole ioServiceConsole){
         this.exam = exam;
         this.examResult = examResult;
+        this.ioServiceConsole = ioServiceConsole;
     }
 
     @Override
@@ -42,9 +45,9 @@ public class ExamServiceImpl implements ExamService{
     @Override
     public void printExamResult() {
         if(examResult.getExamResult()) {
-            System.out.println("Экзамен сдан");
+            ioServiceConsole.out("Экзамен сдан");
             return;
         }
-        System.out.println("Экзамен не сдан");
+        ioServiceConsole.out("Экзамен не сдан");
     }
 }

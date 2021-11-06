@@ -3,21 +3,32 @@ package learning.spring.config;
 import learning.spring.dao.QuestionDao;
 import learning.spring.domain.Exam;
 import learning.spring.domain.ExamResult;
-import learning.spring.service.ExamService;
-import learning.spring.service.ExamServiceImpl;
-import learning.spring.service.QuestionService;
-import learning.spring.service.QuestionServiceImpl;
+import learning.spring.service.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.InputStream;
+import java.io.PrintStream;
 
 @Configuration
 public class ServiceConfig {
 
     private final int rightAnswersLimit;
 
-    public ServiceConfig(@Value("#{new Integer(${right.count})}") int rightAnswersLimit){
+    private final PrintStream out;
+
+    private final InputStream in;
+
+
+    public ServiceConfig(@Value("#{new Integer(${right.count})}") int rightAnswersLimit,
+                         @Value("#{T(java.lang.System).out}")
+                                 PrintStream out,
+                         @Value("#{T(java.lang.System).in}")
+                                 InputStream in){
         this.rightAnswersLimit = rightAnswersLimit;
+        this.out = out;
+        this.in = in;
     }
 
     @Bean
@@ -36,7 +47,12 @@ public class ServiceConfig {
     }
 
     @Bean
-    public ExamService examService(Exam e, ExamResult er){
-        return new ExamServiceImpl(e, er);
+    public IOService getIOService() {
+        return new IOServiceConsole(out, in);
+    }
+
+    @Bean
+    public ExamService examService(Exam e, ExamResult er, IOServiceConsole ioService){
+        return new ExamServiceImpl(e, er, ioService);
     }
 }
