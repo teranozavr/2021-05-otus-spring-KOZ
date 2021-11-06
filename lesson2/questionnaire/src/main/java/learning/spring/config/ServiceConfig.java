@@ -2,6 +2,7 @@ package learning.spring.config;
 
 import learning.spring.dao.QuestionDao;
 import learning.spring.domain.Exam;
+import learning.spring.domain.ExamResult;
 import learning.spring.service.ExamService;
 import learning.spring.service.ExamServiceImpl;
 import learning.spring.service.QuestionService;
@@ -13,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfig {
 
-    private final int rightCount;
+    private final int rightAnswersLimit;
 
-    public ServiceConfig(@Value("#{new Integer(${right.count})}") int rightCount){
-        this.rightCount = rightCount;
+    public ServiceConfig(@Value("#{new Integer(${right.count})}") int rightAnswersLimit){
+        this.rightAnswersLimit = rightAnswersLimit;
     }
 
     @Bean
@@ -30,7 +31,12 @@ public class ServiceConfig {
     }
 
     @Bean
-    public ExamService examService(Exam e){
-        return new ExamServiceImpl(e, rightCount);
+    public ExamResult getExamResult() {
+        return new ExamResult(rightAnswersLimit);
+    }
+
+    @Bean
+    public ExamService examService(Exam e, ExamResult er){
+        return new ExamServiceImpl(e, er);
     }
 }
