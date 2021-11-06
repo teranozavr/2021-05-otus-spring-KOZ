@@ -26,7 +26,7 @@ public class ServiceConfig {
 
     @Bean
     public Exam getExam(QuestionService questionService){
-        return new Exam(questionService);
+        return new Exam(questionService.getAllQuestions());
     }
 
     @Bean

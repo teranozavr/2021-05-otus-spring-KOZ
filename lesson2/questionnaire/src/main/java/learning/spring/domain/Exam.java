@@ -11,8 +11,8 @@ public class Exam {
     private int rightAnswersCount = 0;
     private final List<Question> questionList;
 
-    public Exam(@Autowired QuestionService questionService) {
-        questionList = questionService.getAllQuestions();
+    public Exam(List<Question> questionList) {
+        this.questionList = questionList;
     }
 
     public Question getNextQuestion(){
