@@ -52,7 +52,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public ExamService examService(Exam e, ExamResult er, IOServiceConsole ioService){
+    public ExamService examService(Exam e, ExamResult er, IOService ioService){
         return new ExamServiceImpl(e, er, ioService);
     }
 }

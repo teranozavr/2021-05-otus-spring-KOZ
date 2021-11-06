@@ -15,6 +15,5 @@ public class Main {
                 new AnnotationConfigApplicationContext(Main.class);
         ExamService examService = context.getBean(ExamService.class);
         examService.startExam();
-        examService.printExamResult();
     }
 }

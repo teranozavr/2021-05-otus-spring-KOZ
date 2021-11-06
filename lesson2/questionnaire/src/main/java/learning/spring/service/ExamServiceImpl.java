@@ -3,12 +3,7 @@ package learning.spring.service;
 import learning.spring.domain.Exam;
 import learning.spring.domain.Question;
 import learning.spring.domain.ExamResult;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import static learning.spring.helpers.QuestionPrinter.printQuestion;
+import learning.spring.exceptions.QuestionProcessingException;
 
 public class ExamServiceImpl implements ExamService{
 
@@ -16,38 +11,51 @@ public class ExamServiceImpl implements ExamService{
 
     private final ExamResult examResult;
 
-    private final IOServiceConsole ioServiceConsole;
+    private final IOService ioServiceConsole;
 
-    public ExamServiceImpl(Exam exam, ExamResult examResult, IOServiceConsole ioServiceConsole){
+    private ExceptionPrinterServiceConsole exceptionPrinterServiceConsole;
+
+    private QuestionPrinterServiceConsole questionPrinterServiceConsole;
+
+    public ExamServiceImpl(Exam exam, ExamResult examResult, IOService ioServiceConsole){
         this.exam = exam;
         this.examResult = examResult;
         this.ioServiceConsole = ioServiceConsole;
+        this.exceptionPrinterServiceConsole = new ExceptionPrinterServiceConsole(ioServiceConsole);
+        this.questionPrinterServiceConsole = new QuestionPrinterServiceConsole(ioServiceConsole);
     }
 
     @Override
-    public void startExam() throws IOException {
-        for (var question: exam.getQuestionsList()) {
-            printQuestion(question);
-            if (askQuestion(question)) {
-                examResult.increaseRightAnswersCount();
+    public void startExam() {
+        try {
+            for (var question : exam.getQuestionsList()) {
+                questionPrinterServiceConsole.printQuestion(question);
+                if (askQuestion(question)) {
+                    examResult.increaseRightAnswersCount();
+                }
             }
+            printExamResult();
+        }
+        catch(Exception e){
+            exceptionPrinterServiceConsole.printException(e);
         }
     }
 
-    private boolean askQuestion(Question question) throws IOException {
-        InputStreamReader in = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(in);
-        String a = br.readLine();
-        int answerNumber = Integer.parseInt(a);
-        return question.getRightAnswerNumber().equals(answerNumber);
+    private boolean askQuestion(Question question) throws QuestionProcessingException {
+        try {
+            int answerNumber = Integer.parseInt(ioServiceConsole.readString());
+            return question.getRightAnswerNumber().equals(answerNumber);
+        }
+        catch (Exception e) {
+            throw new QuestionProcessingException(e.getCause());
+        }
     }
 
-    @Override
-    public void printExamResult() {
+    private void printExamResult() {
         if(examResult.getExamResult()) {
-            ioServiceConsole.out("Экзамен сдан");
+            ioServiceConsole.out("Passed");
             return;
         }
-        ioServiceConsole.out("Экзамен не сдан");
+        ioServiceConsole.out("Failed");
     }
 }
