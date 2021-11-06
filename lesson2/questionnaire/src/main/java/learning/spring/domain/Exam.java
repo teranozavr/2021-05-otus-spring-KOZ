@@ -9,7 +9,7 @@ public class Exam {
 
     private int currentQuestion = 0;
     private int rightAnswersCount = 0;
-    private static List<Question> questionList;
+    private final List<Question> questionList;
 
     public Exam(@Autowired QuestionService questionService) {
         questionList = questionService.getAllQuestions();
