@@ -13,14 +13,13 @@ import static learning.spring.helpers.QuestionPrinter.printQuestion;
 
 public class ExamServiceImpl implements ExamService{
 
-    @Value("#{new Integer(${right.count})}")
-    private Integer rightCount;
+    private final int rightCount;
 
+    private final Exam exam;
 
-    private static Exam exam;
-
-    public ExamServiceImpl(@Autowired Exam exam){
+    public ExamServiceImpl(Exam exam, int rightCount){
         this.exam = exam;
+        this.rightCount = rightCount;
     }
 
     @Override

@@ -4,7 +4,6 @@ import learning.spring.service.ExamService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import learning.spring.service.QuestionService;
 
 import java.io.IOException;
 

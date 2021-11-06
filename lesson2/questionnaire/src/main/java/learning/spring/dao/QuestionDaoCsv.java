@@ -7,6 +7,9 @@ import java.util.List;
 
 import learning.spring.domain.Question;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import static learning.spring.helpers.StringProcessor.getQuestion;
 import static learning.spring.helpers.StringProcessor.getStringList;

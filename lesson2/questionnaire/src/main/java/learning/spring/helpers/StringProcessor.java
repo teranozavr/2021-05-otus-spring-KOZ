@@ -28,7 +28,7 @@ public class StringProcessor {
         return answerList;
     }
 
-    private static Boolean isRightAnswer(String str){
+    private static boolean isRightAnswer(String str){
         return str.substring(0, 1).contains("+");
     }
 

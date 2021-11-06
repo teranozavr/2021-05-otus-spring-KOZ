@@ -11,8 +11,11 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class DaoConfig {
 
-    @Value("${questions.location}")
-    private String location;
+    private final String location;
+
+    public DaoConfig(@Value("${questions.location}") String location) {
+        this.location = location;
+    }
 
     @Bean
     public QuestionDao questionDao(){
