@@ -1,9 +1,8 @@
 package learning.spring.config;
 
 import learning.spring.dao.QuestionDao;
-import learning.spring.domain.Exam;
-import learning.spring.domain.ExamResult;
 import learning.spring.service.*;
+import learning.spring.service.Impl.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +17,18 @@ public class ServiceConfig {
 
     private final InputStream in;
 
+    private final int rightAnswersLimit;
+
 
     public ServiceConfig(@Value("#{T(java.lang.System).out}")
                                  PrintStream out,
                          @Value("#{T(java.lang.System).in}")
-                                 InputStream in){
+                                 InputStream in,
+                         @Value("#{new Integer(${right.count})}")
+                         int rightAnswersLimit){
         this.out = out;
         this.in = in;
+        this.rightAnswersLimit = rightAnswersLimit;
     }
 
     @Bean
@@ -49,6 +53,6 @@ public class ServiceConfig {
 
     @Bean
     public ExamService examService(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
-        return new ExamServiceImpl(questionService, ioService, exceptionPrinterService, questionPrinterService);
+        return new ExamServiceImpl(questionService, ioService, exceptionPrinterService, questionPrinterService, rightAnswersLimit);
     }
 }

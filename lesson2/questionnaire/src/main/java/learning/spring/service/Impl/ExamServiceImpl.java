@@ -1,15 +1,16 @@
-package learning.spring.service;
+package learning.spring.service.Impl;
 
 import learning.spring.domain.Exam;
 import learning.spring.domain.Question;
 import learning.spring.domain.ExamResult;
 import learning.spring.exceptions.AnswerProcessingException;
+import learning.spring.service.*;
 
-public class ExamServiceImpl implements ExamService{
+public class ExamServiceImpl implements ExamService {
 
-    private final Exam exam;
+    private Exam exam;
 
-    private final ExamResult examResult;
+    private ExamResult examResult;
 
     private final IOService ioService;
 
@@ -17,17 +18,23 @@ public class ExamServiceImpl implements ExamService{
 
     private final QuestionPrinterService questionPrinterService;
 
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
-        this.exam = new Exam(questionService.getAllQuestions());
-        this.examResult = new ExamResult();
+    private final int rightAnswersLimit;
+
+    private final QuestionService questionService;
+
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, int rightAnswersLimit) throws Exception {
+        this.questionService = questionService;
         this.ioService = ioService;
         this.exceptionPrinterService = exceptionPrinterService;
         this.questionPrinterService = questionPrinterService;
+        this.rightAnswersLimit = rightAnswersLimit;
     }
 
     @Override
     public void startExam() {
         try {
+            this.exam = new Exam(questionService.getAllQuestions());
+            this.examResult = new ExamResult(rightAnswersLimit);
             for (var question : exam.getQuestionsList()) {
                 questionPrinterService.printQuestion(question);
                 if (askQuestion(question)) {

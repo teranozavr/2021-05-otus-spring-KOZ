@@ -16,7 +16,7 @@ import static learning.spring.helpers.ResourceFileReader.*;
 public class QuestionDaoCsv implements QuestionDao {
     private final String location;
 
-    public QuestionDaoCsv(String location) throws FileNotFoundException, QuestionProcessingException {
+    public QuestionDaoCsv(String location) {
         this.location = location;
     }
 

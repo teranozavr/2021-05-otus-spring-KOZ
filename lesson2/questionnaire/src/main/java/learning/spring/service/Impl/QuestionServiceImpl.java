@@ -1,7 +1,8 @@
-package learning.spring.service;
+package learning.spring.service.Impl;
 
 import learning.spring.dao.QuestionDao;
 import learning.spring.domain.*;
+import learning.spring.service.QuestionService;
 
 import java.util.List;
 
