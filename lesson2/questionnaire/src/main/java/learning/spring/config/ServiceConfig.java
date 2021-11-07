@@ -14,19 +14,15 @@ import java.io.PrintStream;
 @Configuration
 public class ServiceConfig {
 
-    private final int rightAnswersLimit;
-
     private final PrintStream out;
 
     private final InputStream in;
 
 
-    public ServiceConfig(@Value("#{new Integer(${right.count})}") int rightAnswersLimit,
-                         @Value("#{T(java.lang.System).out}")
+    public ServiceConfig(@Value("#{T(java.lang.System).out}")
                                  PrintStream out,
                          @Value("#{T(java.lang.System).in}")
                                  InputStream in){
-        this.rightAnswersLimit = rightAnswersLimit;
         this.out = out;
         this.in = in;
     }
@@ -37,22 +33,22 @@ public class ServiceConfig {
     }
 
     @Bean
-    public Exam getExam(QuestionService questionService){
-        return new Exam(questionService.getAllQuestions());
+    public IOService ioService() {
+        return new IOServiceImpl(out, in);
     }
 
     @Bean
-    public ExamResult getExamResult() {
-        return new ExamResult(rightAnswersLimit);
+    public ExceptionPrinterService exceptionPrinterService(IOService ioService) {
+        return new ExceptionPrinterServiceConsole(ioService);
     }
 
     @Bean
-    public IOService getIOService() {
-        return new IOServiceConsole(out, in);
+    public QuestionPrinterService questionPrinterService(IOService ioService) {
+        return new QuestionPrinterServiceConsole(ioService);
     }
 
     @Bean
-    public ExamService examService(Exam e, ExamResult er, IOService ioService){
-        return new ExamServiceImpl(e, er, ioService);
+    public ExamService examService(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService){
+        return new ExamServiceImpl(questionService, ioService, exceptionPrinterService, questionPrinterService);
     }
 }

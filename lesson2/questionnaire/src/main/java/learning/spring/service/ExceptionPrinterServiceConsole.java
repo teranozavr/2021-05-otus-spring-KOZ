@@ -2,9 +2,11 @@ package learning.spring.service;
 
 import learning.spring.exceptions.AnswerProcessingException;
 import learning.spring.exceptions.QuestionProcessingException;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 
+@Component
 public class ExceptionPrinterServiceConsole implements ExceptionPrinterService {
 
     private final IOService ioServiceConsole;

@@ -1,12 +1,12 @@
 package learning.spring.domain;
 
-public class ExamResult {
-    private final int rightAnswersLimit;
-    private int rightAnswerCount = 0;
+import org.springframework.beans.factory.annotation.Value;
 
-    public ExamResult(int rightAnswersLimit) {
-        this.rightAnswersLimit = rightAnswersLimit;
-    }
+public class ExamResult {
+
+    @Value("#{new Integer(${right.count})}")
+    private int rightAnswersLimit;
+    private int rightAnswerCount = 0;
 
     public void increaseRightAnswersCount(){
         rightAnswerCount++;

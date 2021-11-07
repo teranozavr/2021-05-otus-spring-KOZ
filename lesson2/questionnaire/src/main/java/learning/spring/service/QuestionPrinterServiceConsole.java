@@ -2,7 +2,9 @@ package learning.spring.service;
 
 import learning.spring.domain.Answer;
 import learning.spring.domain.Question;
+import org.springframework.stereotype.Component;
 
+@Component
 public class QuestionPrinterServiceConsole implements QuestionPrinterService {
 
     private final IOService ioServiceConsole;

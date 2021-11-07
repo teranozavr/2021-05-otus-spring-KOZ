@@ -11,25 +11,25 @@ public class ExamServiceImpl implements ExamService{
 
     private final ExamResult examResult;
 
-    private final IOService ioServiceConsole;
+    private final IOService ioService;
 
-    private ExceptionPrinterServiceConsole exceptionPrinterServiceConsole;
+    private final ExceptionPrinterService exceptionPrinterService;
 
-    private QuestionPrinterServiceConsole questionPrinterServiceConsole;
+    private final QuestionPrinterService questionPrinterService;
 
-    public ExamServiceImpl(Exam exam, ExamResult examResult, IOService ioServiceConsole){
-        this.exam = exam;
-        this.examResult = examResult;
-        this.ioServiceConsole = ioServiceConsole;
-        this.exceptionPrinterServiceConsole = new ExceptionPrinterServiceConsole(ioServiceConsole);
-        this.questionPrinterServiceConsole = new QuestionPrinterServiceConsole(ioServiceConsole);
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService){
+        this.exam = new Exam(questionService.getAllQuestions());
+        this.examResult = new ExamResult();
+        this.ioService = ioService;
+        this.exceptionPrinterService = exceptionPrinterService;
+        this.questionPrinterService = questionPrinterService;
     }
 
     @Override
     public void startExam() {
         try {
             for (var question : exam.getQuestionsList()) {
-                questionPrinterServiceConsole.printQuestion(question);
+                questionPrinterService.printQuestion(question);
                 if (askQuestion(question)) {
                     examResult.increaseRightAnswersCount();
                 }
@@ -37,13 +37,13 @@ public class ExamServiceImpl implements ExamService{
             printExamResult();
         }
         catch(Exception e){
-            exceptionPrinterServiceConsole.printException(e);
+            exceptionPrinterService.printException(e);
         }
     }
 
     private boolean askQuestion(Question question) throws QuestionProcessingException {
         try {
-            int answerNumber = Integer.parseInt(ioServiceConsole.readString());
+            int answerNumber = Integer.parseInt(ioService.readString());
             return question.getRightAnswerNumber().equals(answerNumber);
         }
         catch (Exception e) {
@@ -53,9 +53,9 @@ public class ExamServiceImpl implements ExamService{
 
     private void printExamResult() {
         if(examResult.getExamResult()) {
-            ioServiceConsole.out("Passed");
+            ioService.out("Passed");
             return;
         }
-        ioServiceConsole.out("Failed");
+        ioService.out("Failed");
     }
 }
