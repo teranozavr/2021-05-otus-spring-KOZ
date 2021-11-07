@@ -14,21 +14,20 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class QuestionServiceImplTests {
-    private static final String LOCATION = "questions.csv";
     private QuestionServiceImpl questionService;
 
     @Mock
     QuestionDaoCsv questionDao;
 
     @BeforeEach
-    public void init(){
+    public void init() throws Exception {
         initMocks(this);
-        when(questionDao.getAll()).thenReturn(getAllQuestions());
+        when(questionDao.getAllQuestions()).thenReturn(getAllQuestions());
         questionService = new QuestionServiceImpl(questionDao);
     }
 
     @Test
-    public void getAllQuestionsTest(){
+    public void getAllQuestionsTest() throws Exception {
         List<Question> questionList = questionService.getAllQuestions();
         Assertions.assertNotNull(questionList);
         Assertions.assertEquals(2, questionList.size());

@@ -3,7 +3,7 @@ package learning.spring.service;
 import learning.spring.domain.Exam;
 import learning.spring.domain.Question;
 import learning.spring.domain.ExamResult;
-import learning.spring.exceptions.QuestionProcessingException;
+import learning.spring.exceptions.AnswerProcessingException;
 
 public class ExamServiceImpl implements ExamService{
 
@@ -17,7 +17,7 @@ public class ExamServiceImpl implements ExamService{
 
     private final QuestionPrinterService questionPrinterService;
 
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService){
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
         this.exam = new Exam(questionService.getAllQuestions());
         this.examResult = new ExamResult();
         this.ioService = ioService;
@@ -41,13 +41,13 @@ public class ExamServiceImpl implements ExamService{
         }
     }
 
-    private boolean askQuestion(Question question) throws QuestionProcessingException {
+    private boolean askQuestion(Question question) throws AnswerProcessingException {
         try {
             int answerNumber = Integer.parseInt(ioService.readString());
             return question.getRightAnswerNumber().equals(answerNumber);
         }
         catch (Exception e) {
-            throw new QuestionProcessingException(e.getCause());
+            throw new AnswerProcessingException(e.getCause());
         }
     }
 

@@ -13,8 +13,8 @@ public class QuestionServiceImpl implements QuestionService {
         this.questionDao = dao;
     }
 
-    public List<Question> getAllQuestions(){
-        return questionDao.getAll();
+    public List<Question> getAllQuestions() throws Exception {
+        return questionDao.getAllQuestions();
     }
 
 }

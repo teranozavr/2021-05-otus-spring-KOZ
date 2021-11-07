@@ -12,10 +12,10 @@ public class QuestionDaoCsvTests {
     private static final String wrongLocation = "wrong.csv";
 
     @Test
-    public void questionDaoImplConstructorTest() throws FileNotFoundException, QuestionProcessingException {
+    public void questionDaoImplConstructorTest() throws Exception {
         questionDao = new QuestionDaoCsv(location);
-        Assertions.assertNotNull(questionDao.getAll());
-        Assertions.assertEquals(5, questionDao.getAll().size());
+        Assertions.assertNotNull(questionDao.getAllQuestions());
+        Assertions.assertEquals(5, questionDao.getAllQuestions().size());
     }
 
     @Test

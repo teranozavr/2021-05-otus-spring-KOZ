@@ -14,20 +14,15 @@ import static learning.spring.helpers.ResourceFileReader.*;
 
 @Slf4j
 public class QuestionDaoCsv implements QuestionDao {
-    private final List<Question> questionList;
     private final String location;
 
     public QuestionDaoCsv(String location) throws FileNotFoundException, QuestionProcessingException {
         this.location = location;
-        questionList = new ArrayList<>();
-            fillQuestionList();
     }
 
-    public List<Question> getAll(){
-        return questionList;
-    }
 
-    private void fillQuestionList() throws FileNotFoundException, QuestionProcessingException {
+    public List<Question> getAllQuestions() throws Exception {
+        List<Question> questionList = new ArrayList<>();
         List<String> stringList;
         try{
             String resourceString = getResourceFileAsString(location);
@@ -35,6 +30,7 @@ public class QuestionDaoCsv implements QuestionDao {
             for (String s: stringList) {
                 questionList.add(getQuestion(s));
             }
+            return questionList;
         }
         catch (Exception e) {
             if(e.getClass().equals(FileNotFoundException.class)) {

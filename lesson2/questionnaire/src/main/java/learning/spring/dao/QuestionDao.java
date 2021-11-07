@@ -4,5 +4,5 @@ import learning.spring.domain.*;
 import java.util.List;
 
 public interface QuestionDao {
-    List<Question> getAll();
+    List<Question> getAllQuestions() throws Exception;
 }

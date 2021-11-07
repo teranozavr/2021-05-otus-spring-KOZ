@@ -48,7 +48,7 @@ public class ServiceConfig {
     }
 
     @Bean
-    public ExamService examService(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService){
+    public ExamService examService(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
         return new ExamServiceImpl(questionService, ioService, exceptionPrinterService, questionPrinterService);
     }
 }
