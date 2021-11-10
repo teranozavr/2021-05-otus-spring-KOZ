@@ -19,15 +19,11 @@ public class ExceptionPrinterServiceImpl implements ExceptionPrinterService {
 
     public void printException(Exception e){
         if (e.getClass().equals(QuestionProcessingException.class)){
-            ioService.out("Error when question processing.");
+            ioService.out(String.format("Error when question processing. %s", e.getCause()));
             return;
         }
         if (e.getClass().equals(AnswerProcessingException.class)){
             ioService.out("Error when answer read. Try again!");
-            return;
-        }
-        if (e.getClass().equals(FileNotFoundException.class)){
-            ioService.out("File not found "+e.getMessage());
             return;
         }
         ioService.out("Unexpected error!");
