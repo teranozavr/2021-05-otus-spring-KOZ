@@ -5,7 +5,11 @@ import learning.spring.domain.Question;
 import learning.spring.domain.ExamResult;
 import learning.spring.exceptions.AnswerProcessingException;
 import learning.spring.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExamServiceImpl implements ExamService {
 
     private Exam exam;
@@ -18,11 +22,13 @@ public class ExamServiceImpl implements ExamService {
 
     private final QuestionPrinterService questionPrinterService;
 
-    private final int rightAnswersLimit;
+    @Value("#{new Integer(${right.count})}")
+    private int rightAnswersLimit;
 
     private final QuestionService questionService;
 
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, int rightAnswersLimit) throws Exception {
+    @Autowired
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
         this.questionService = questionService;
         this.ioService = ioService;
         this.exceptionPrinterService = exceptionPrinterService;

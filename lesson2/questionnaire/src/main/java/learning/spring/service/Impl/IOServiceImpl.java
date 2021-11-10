@@ -2,11 +2,13 @@ package learning.spring.service.Impl;
 
 import learning.spring.service.IOService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+@Component
 public class IOServiceImpl implements IOService {
     private final PrintStream out;
     private final Scanner sc;
