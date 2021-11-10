@@ -1,6 +1,5 @@
 package learning.spring.dao;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +22,7 @@ public class QuestionDaoCsv implements QuestionDao {
         this.location = location;
     }
 
-
-    public List<Question> getAllQuestions() throws Exception {
+    public List<Question> getAllQuestions() throws QuestionProcessingException {
         List<Question> questionList = new ArrayList<>();
         List<String> stringList;
         try{
@@ -36,11 +34,7 @@ public class QuestionDaoCsv implements QuestionDao {
             return questionList;
         }
         catch (Exception e) {
-            if(e.getClass().equals(FileNotFoundException.class)) {
-                throw new FileNotFoundException(location);
-            }
-            else throw new QuestionProcessingException(e);
+            throw new QuestionProcessingException(e);
         }
-
     }
 }
