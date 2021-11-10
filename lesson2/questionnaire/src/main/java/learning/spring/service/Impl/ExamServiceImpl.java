@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExamServiceImpl implements ExamService {
 
-    private Exam exam;
-
     private ExamResult examResult;
 
     private final IOService ioService;
@@ -28,18 +26,17 @@ public class ExamServiceImpl implements ExamService {
     private final QuestionService questionService;
 
     @Autowired
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) throws Exception {
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) {
         this.questionService = questionService;
         this.ioService = ioService;
         this.exceptionPrinterService = exceptionPrinterService;
         this.questionPrinterService = questionPrinterService;
-        this.rightAnswersLimit = rightAnswersLimit;
     }
 
     @Override
     public void startExam() {
         try {
-            this.exam = new Exam(questionService.getAllQuestions());
+            Exam exam = new Exam(questionService.getAllQuestions());
             this.examResult = new ExamResult(rightAnswersLimit);
             for (var question : exam.getQuestionsList()) {
                 questionPrinterService.printQuestion(question);

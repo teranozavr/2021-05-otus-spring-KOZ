@@ -9,27 +9,27 @@ import org.springframework.stereotype.Component;
 import java.io.FileNotFoundException;
 
 @Component
-public class ExceptionPrinterServiceConsole implements ExceptionPrinterService {
+public class ExceptionPrinterServiceImpl implements ExceptionPrinterService {
 
-    private final IOService ioServiceConsole;
+    private final IOService ioService;
 
-    public ExceptionPrinterServiceConsole(IOService ioServiceConsole) {
-        this.ioServiceConsole = ioServiceConsole;
+    public ExceptionPrinterServiceImpl(IOService ioService) {
+        this.ioService = ioService;
     }
 
     public void printException(Exception e){
         if (e.getClass().equals(QuestionProcessingException.class)){
-            ioServiceConsole.out("Error when question processing.");
+            ioService.out("Error when question processing.");
             return;
         }
         if (e.getClass().equals(AnswerProcessingException.class)){
-            ioServiceConsole.out("Error when answer read. Try again!");
+            ioService.out("Error when answer read. Try again!");
             return;
         }
         if (e.getClass().equals(FileNotFoundException.class)){
-            ioServiceConsole.out("File not found "+e.getMessage());
+            ioService.out("File not found "+e.getMessage());
             return;
         }
-        ioServiceConsole.out("Unexpected error!");
+        ioService.out("Unexpected error!");
     }
 }

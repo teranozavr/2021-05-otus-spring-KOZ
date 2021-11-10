@@ -7,19 +7,19 @@ import learning.spring.service.QuestionPrinterService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QuestionPrinterServiceConsole implements QuestionPrinterService {
+public class QuestionPrinterServiceImpl implements QuestionPrinterService {
 
-    private final IOService ioServiceConsole;
+    private final IOService ioService;
 
-    public QuestionPrinterServiceConsole(IOService ioServiceConsole) {
-        this.ioServiceConsole = ioServiceConsole;
+    public QuestionPrinterServiceImpl(IOService ioService) {
+        this.ioService = ioService;
     }
 
     public void printQuestion(Question question){
-        ioServiceConsole.out(question.getQuestionText());
+        ioService.out(question.getQuestionText());
         for (Answer a : question.getAnswers()
         ) {
-            ioServiceConsole.out("-"+a.getAnswerText());
+            ioService.out("-"+a.getAnswerText());
         }
     }
 }
