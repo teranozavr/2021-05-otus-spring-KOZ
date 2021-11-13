@@ -4,9 +4,9 @@ import learning.spring.domain.Answer;
 import learning.spring.domain.Question;
 import learning.spring.service.IOService;
 import learning.spring.service.QuestionPrinterService;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class QuestionPrinterServiceImpl implements QuestionPrinterService {
 
     private final IOService ioService;

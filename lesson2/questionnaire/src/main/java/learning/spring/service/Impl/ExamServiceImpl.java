@@ -7,9 +7,9 @@ import learning.spring.exceptions.AnswerProcessingException;
 import learning.spring.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ExamServiceImpl implements ExamService {
 
     private final IOService ioService;
