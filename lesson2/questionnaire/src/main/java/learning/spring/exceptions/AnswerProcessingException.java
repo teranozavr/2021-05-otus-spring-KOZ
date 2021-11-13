@@ -1,8 +1,6 @@
 package learning.spring.exceptions;
 
-import java.io.IOException;
-
-public class AnswerProcessingException extends IOException {
+public class AnswerProcessingException extends RuntimeException {
     public AnswerProcessingException(Throwable cause) {
         super(cause);
     }

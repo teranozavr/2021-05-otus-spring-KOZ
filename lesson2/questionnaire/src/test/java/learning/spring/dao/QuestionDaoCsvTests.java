@@ -1,10 +1,7 @@
 package learning.spring.dao;
 
-import learning.spring.exceptions.QuestionProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
 
 public class QuestionDaoCsvTests {
     private QuestionDaoCsv questionDao;

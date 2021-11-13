@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import learning.spring.domain.Question;
-import learning.spring.exceptions.QuestionProcessingException;
+import learning.spring.exceptions.QuestionReadingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public class QuestionDaoCsv implements QuestionDao {
         this.location = location;
     }
 
-    public List<Question> getAllQuestions() throws QuestionProcessingException {
+    public List<Question> getAllQuestions() throws QuestionReadingException {
         List<Question> questionList = new ArrayList<>();
         List<String> stringList;
         try{
@@ -34,7 +34,7 @@ public class QuestionDaoCsv implements QuestionDao {
             return questionList;
         }
         catch (Exception e) {
-            throw new QuestionProcessingException(e);
+            throw new QuestionReadingException(e);
         }
     }
 }

@@ -1,7 +1,7 @@
 package learning.spring.service.Impl;
 
 import learning.spring.exceptions.AnswerProcessingException;
-import learning.spring.exceptions.QuestionProcessingException;
+import learning.spring.exceptions.QuestionReadingException;
 import learning.spring.service.ExceptionPrinterService;
 import learning.spring.service.IOService;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class ExceptionPrinterServiceImpl implements ExceptionPrinterService {
     }
 
     public void printException(Exception e){
-        if (e.getClass().equals(QuestionProcessingException.class)){
+        if (e.getClass().equals(QuestionReadingException.class)){
             ioService.out(String.format("Error when question processing. %s", e.getCause()));
             return;
         }
