@@ -20,17 +20,17 @@ public class ExamServiceImpl implements ExamService {
 
     private final QuestionPrinterService questionPrinterService;
 
-    @Value("#{new Integer(${right.count})}")
-    private int rightAnswersLimit;
-
     private final QuestionService questionService;
 
+    private final int rightAnswersLimit;
+
     @Autowired
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService) {
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, @Value("#{new Integer(${right.count})}") int rightAnswersLimit) {
         this.questionService = questionService;
         this.ioService = ioService;
         this.exceptionPrinterService = exceptionPrinterService;
         this.questionPrinterService = questionPrinterService;
+        this.rightAnswersLimit = rightAnswersLimit;
     }
 
     @Override
