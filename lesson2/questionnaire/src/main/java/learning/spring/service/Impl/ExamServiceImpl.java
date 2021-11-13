@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExamServiceImpl implements ExamService {
 
-    private ExamResult examResult;
-
     private final IOService ioService;
 
     private final ExceptionPrinterService exceptionPrinterService;
@@ -37,14 +35,14 @@ public class ExamServiceImpl implements ExamService {
     public void startExam() {
         try {
             Exam exam = new Exam(questionService.getAllQuestions());
-            this.examResult = new ExamResult(rightAnswersLimit);
+            ExamResult examResult = new ExamResult(rightAnswersLimit);
             for (var question : exam.getQuestionsList()) {
                 questionPrinterService.printQuestion(question);
                 if (askQuestion(question)) {
                     examResult.increaseRightAnswersCount();
                 }
             }
-            printExamResult();
+            printExamResult(examResult);
         }
         catch(Exception e){
             exceptionPrinterService.printException(e);
@@ -61,7 +59,7 @@ public class ExamServiceImpl implements ExamService {
         }
     }
 
-    private void printExamResult() {
+    private void printExamResult(ExamResult examResult) {
         if(examResult.getExamResult()) {
             ioService.out("Passed");
             return;
