@@ -7,14 +7,14 @@ import learning.spring.domain.Question;
 import learning.spring.exceptions.QuestionProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import static learning.spring.helpers.QuestionFactory.getQuestion;
 import static learning.spring.helpers.StringProcessor.getStringList;
 import static learning.spring.helpers.ResourceFileReader.*;
 
 @Slf4j
-@Component
+@Repository
 public class QuestionDaoCsv implements QuestionDao {
     private final String location;
 
