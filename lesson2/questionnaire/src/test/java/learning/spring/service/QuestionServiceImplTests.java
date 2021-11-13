@@ -18,17 +18,17 @@ public class QuestionServiceImplTests {
     private QuestionServiceImpl questionService;
 
     @Mock
-    QuestionDaoCsv questionDao;
+    private QuestionDaoCsv questionDao;
 
     @BeforeEach
-    public void init() throws Exception {
+    public void init() {
         initMocks(this);
         when(questionDao.getAllQuestions()).thenReturn(getAllQuestions());
         questionService = new QuestionServiceImpl(questionDao);
     }
 
     @Test
-    public void getAllQuestionsTest() throws Exception {
+    public void getAllQuestionsTest() {
         List<Question> questionList = questionService.getAllQuestions();
         Assertions.assertNotNull(questionList);
         Assertions.assertEquals(2, questionList.size());
