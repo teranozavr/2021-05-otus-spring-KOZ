@@ -18,22 +18,22 @@ public class QuestionDaoCsvTests {
     class GetAllQuestionsTests {
         @Test
         void shouldReturnQuestionListWhenCallGetAllQuestionsWirhRightFilePath() {
-            questionDao = new QuestionDaoCsv(location);
-            assertEquals(ArrayList.class, questionDao.getAllQuestions().getClass());
-            assertEquals(Question.class, questionDao.getAllQuestions().get(0).getClass());
+            questionDao = new QuestionDaoCsv();
+            assertEquals(ArrayList.class, questionDao.getAllQuestions(location).getClass());
+            assertEquals(Question.class, questionDao.getAllQuestions(location).get(0).getClass());
         }
 
         @Test
         void shouldReturnFiveQuestionsWhenCallGetAllQuestionsWithRightFilePath() {
-            questionDao = new QuestionDaoCsv(location);
-            assertEquals(5, questionDao.getAllQuestions().size());
+            questionDao = new QuestionDaoCsv();
+            assertEquals(5, questionDao.getAllQuestions(location).size());
         }
         @Test
         void shouldThrowQuestionReadingExceptionWhenCallGetAllQuestionsWithWrongFilePath(){
-            questionDao = new QuestionDaoCsv(wrongLocation);
+            questionDao = new QuestionDaoCsv();
 
             Throwable throwable = assertThrows(Throwable.class,
-                    () -> questionDao.getAllQuestions());
+                    () -> questionDao.getAllQuestions(wrongLocation));
 
             assertEquals(QuestionReadingException.class, throwable.getClass());
         }
