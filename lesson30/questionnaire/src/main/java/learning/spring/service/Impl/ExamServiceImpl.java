@@ -14,7 +14,7 @@ public class ExamServiceImpl implements ExamService {
 
     private final IOService ioService;
 
-    private final ExceptionPrinterService exceptionPrinterService;
+    private final ExceptionProcessor exceptionProcessor;
 
     private final QuestionPrinterService questionPrinterService;
 
@@ -23,10 +23,10 @@ public class ExamServiceImpl implements ExamService {
     private final int rightAnswersLimit;
 
     @Autowired
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, @Value("#{new Integer(${right.count})}") int rightAnswersLimit) {
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionProcessor exceptionProcessor, QuestionPrinterService questionPrinterService, @Value("#{new Integer(${right.count})}") int rightAnswersLimit) {
         this.questionService = questionService;
         this.ioService = ioService;
-        this.exceptionPrinterService = exceptionPrinterService;
+        this.exceptionProcessor = exceptionProcessor;
         this.questionPrinterService = questionPrinterService;
         this.rightAnswersLimit = rightAnswersLimit;
     }
@@ -45,7 +45,7 @@ public class ExamServiceImpl implements ExamService {
             printExamResult(examResult);
         }
         catch(Exception e){
-            exceptionPrinterService.printException(e);
+            exceptionProcessor.processException(e);
         }
     }
 
