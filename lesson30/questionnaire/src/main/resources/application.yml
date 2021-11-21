@@ -17,7 +17,9 @@ management:
     port: 8083
     ssl:
       enabled: false
-
+  endpoint:
+    health:
+      show-details: always
 logging:
   file:
     name: application.log
