@@ -3,3 +3,21 @@ spring:
     basename: locale/questions
 right:
   count: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, logfile"
+      base-path: /
+      path-mapping:
+        health: healthcheck
+        logfile: logfile
+  server:
+    port: 8083
+    ssl:
+      enabled: false
+
+logging:
+  file:
+    name: application.log
