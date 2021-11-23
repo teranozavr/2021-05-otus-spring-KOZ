@@ -5,6 +5,7 @@ import java.util.List;
 
 import learning.spring.domain.Question;
 import learning.spring.exceptions.QuestionReadingException;
+import learning.spring.service.Impl.LocationServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +16,13 @@ import static learning.spring.helpers.ResourceFileReader.*;
 @Slf4j
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
+    private final String location;
 
-    public List<Question> getAllQuestions(String location) throws QuestionReadingException {
+    public QuestionDaoCsv(LocationServiceImpl locationService) {
+        this.location = locationService.getLocation();
+    }
+
+    public List<Question> getAllQuestions() throws QuestionReadingException {
         List<Question> questionList = new ArrayList<>();
         List<String> stringList;
         try{

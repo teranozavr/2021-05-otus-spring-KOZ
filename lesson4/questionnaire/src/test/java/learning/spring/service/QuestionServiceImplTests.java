@@ -31,9 +31,9 @@ public class QuestionServiceImplTests {
     @BeforeEach
     public void init() {
         openMocks(this);
-        when(questionDao.getAllQuestions(anyString())).thenReturn(getAllQuestions());
+        when(questionDao.getAllQuestions()).thenReturn(getAllQuestions());
         when(messageSource.getMessage(anyString(), any(), any(Locale.class))).thenReturn(LOCATION);
-        questionService = new QuestionServiceImpl(questionDao, messageSource);
+        questionService = new QuestionServiceImpl(questionDao);
     }
 
     @Test
