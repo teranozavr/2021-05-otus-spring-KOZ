@@ -2,7 +2,7 @@ package learning.spring.dao;
 
 import learning.spring.domain.Question;
 import learning.spring.exceptions.QuestionReadingException;
-import learning.spring.service.Impl.LocationServiceImpl;
+import learning.spring.service.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class QuestionDaoCsvTests {
     private static final String WRONG_LOCATION = "wrong.csv";
 
     @Mock
-    private LocationServiceImpl locationService;
+    private LocationService locationService;
 
     @BeforeEach
     void init() {
