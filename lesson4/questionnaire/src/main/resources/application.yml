@@ -1,5 +1,5 @@
 spring:
   messages:
-    basename: locale/questions
+    basename: locale/questions, locale/message
 right:
   count: 3

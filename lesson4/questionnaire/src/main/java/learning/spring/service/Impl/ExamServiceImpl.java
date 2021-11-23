@@ -3,6 +3,7 @@ package learning.spring.service.Impl;
 import learning.spring.domain.Exam;
 import learning.spring.domain.Question;
 import learning.spring.domain.ExamResult;
+import learning.spring.domain.Student;
 import learning.spring.exceptions.AnswerProcessingException;
 import learning.spring.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,27 +23,32 @@ public class ExamServiceImpl implements ExamService {
 
     private final int rightAnswersLimit;
 
+    private final MessageService messageService;
+
     @Autowired
-    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, @Value("#{new Integer(${right.count})}") int rightAnswersLimit) {
+    public ExamServiceImpl(QuestionService questionService, IOService ioService, ExceptionPrinterService exceptionPrinterService, QuestionPrinterService questionPrinterService, @Value("#{new Integer(${right.count})}") int rightAnswersLimit, MessageService messageService) {
         this.questionService = questionService;
         this.ioService = ioService;
         this.exceptionPrinterService = exceptionPrinterService;
         this.questionPrinterService = questionPrinterService;
         this.rightAnswersLimit = rightAnswersLimit;
+        this.messageService = messageService;
     }
 
     @Override
     public void startExam() {
         try {
+            Student student = getStudent();
             Exam exam = new Exam(questionService.getAllQuestions());
             ExamResult examResult = new ExamResult(rightAnswersLimit);
+
             for (var question : exam.getQuestionsList()) {
                 questionPrinterService.printQuestion(question);
                 if (askQuestion(question)) {
                     examResult.increaseRightAnswersCount();
                 }
             }
-            printExamResult(examResult);
+            printExamResult(student, examResult);
         }
         catch(Exception e){
             exceptionPrinterService.printException(e);
@@ -59,11 +65,23 @@ public class ExamServiceImpl implements ExamService {
         }
     }
 
-    private void printExamResult(ExamResult examResult) {
+    private void printExamResult(Student student, ExamResult examResult) {
+        StringBuilder resultString = new StringBuilder();
+        resultString.append(student.toString())
+        .append(", ");
         if(examResult.getExamResult()) {
-            ioService.out("Passed");
-            return;
+            resultString.append(messageService.getMessage("testResultOk"));
         }
-        ioService.out("Failed");
+        else resultString.append(messageService.getMessage("testResultFail"));
+        ioService.out(resultString.toString());
+    }
+
+    private Student getStudent(){
+        Student student = new Student();
+        ioService.out(messageService.getMessage("insertName"));
+        student.setName(ioService.readString());
+        ioService.out(messageService.getMessage("insertSurname"));
+        student.setSurname(ioService.readString());
+        return student;
     }
 }
