@@ -1,5 +1,5 @@
 package learning.spring.service;
 
 public interface LocationService {
-    public String getLocation();
+    public String getFilePath();
 }

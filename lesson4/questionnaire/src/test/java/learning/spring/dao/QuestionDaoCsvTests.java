@@ -25,7 +25,7 @@ public class QuestionDaoCsvTests {
     @BeforeEach
     void init() {
         openMocks(this);
-        given(locationService.getLocation()).willReturn(LOCATION);
+        given(locationService.getFilePath()).willReturn(LOCATION);
     }
 
     @Nested
@@ -44,7 +44,7 @@ public class QuestionDaoCsvTests {
         }
         @Test
         void shouldThrowQuestionReadingExceptionWhenCallGetAllQuestionsWithWrongFilePath(){
-            given(locationService.getLocation()).willReturn(WRONG_LOCATION);
+            given(locationService.getFilePath()).willReturn(WRONG_LOCATION);
             questionDao = new QuestionDaoCsv(locationService);
 
             Throwable throwable = assertThrows(Throwable.class,

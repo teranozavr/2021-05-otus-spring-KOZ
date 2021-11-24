@@ -1,5 +1,10 @@
 spring:
   messages:
-    basename: locale/questions, locale/message
+    basename: locale/message
+questions:
+  file:
+    path: data/
+    template: questions
+    extension: csv
 right:
   count: 3

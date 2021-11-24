@@ -19,7 +19,7 @@ public class QuestionDaoCsv implements QuestionDao {
     private final String location;
 
     public QuestionDaoCsv(LocationService locationService) {
-        this.location = locationService.getLocation();
+        this.location = locationService.getFilePath();
     }
 
     public List<Question> getAllQuestions() throws QuestionReadingException {
