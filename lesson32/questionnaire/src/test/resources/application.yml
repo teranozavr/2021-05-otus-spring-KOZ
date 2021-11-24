@@ -1,0 +1,5 @@
+spring:
+  messages:
+    basename: locale/questions
+right:
+  count: 3
