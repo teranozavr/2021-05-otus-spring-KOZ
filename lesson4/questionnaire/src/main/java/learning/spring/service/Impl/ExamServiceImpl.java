@@ -66,14 +66,8 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void printExamResult(Student student, ExamResult examResult) {
-        StringBuilder resultString = new StringBuilder();
-        resultString.append(student.toString())
-        .append(", ");
-        if(examResult.getExamResult()) {
-            resultString.append(messageService.getMessage("testResultOk"));
-        }
-        else resultString.append(messageService.getMessage("testResultFail"));
-        ioService.out(resultString.toString());
+        String resultStr = messageService.getMessage(examResult.getExamResult()? "testResultOk": "testResultFail");
+        ioService.out(String.format(resultStr, student));
     }
 
     private Student getStudent(){
