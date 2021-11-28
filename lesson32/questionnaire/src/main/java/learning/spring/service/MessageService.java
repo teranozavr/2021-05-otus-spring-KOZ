@@ -1,5 +1,5 @@
 package learning.spring.service;
 
 public interface MessageService {
-    public String getMessage(String message);
+    String getMessage(String message);
 }

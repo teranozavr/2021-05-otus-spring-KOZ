@@ -1,8 +1,8 @@
 package learning.spring.dao;
 
+import learning.spring.config.QuestionsConfig;
 import learning.spring.domain.Question;
 import learning.spring.exceptions.QuestionReadingException;
-import learning.spring.service.LocationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,32 +20,32 @@ public class QuestionDaoCsvTests {
     private static final String WRONG_LOCATION = "wrong.csv";
 
     @Mock
-    private LocationService locationService;
+    private QuestionsConfig questionsConfig;
 
     @BeforeEach
     void init() {
         openMocks(this);
-        given(locationService.getFilePath()).willReturn(LOCATION);
+        given(questionsConfig.getFilePath()).willReturn(LOCATION);
     }
 
     @Nested
     class GetAllQuestionsTests {
         @Test
         void shouldReturnQuestionListWhenCallGetAllQuestionsWirhRightFilePath() {
-            questionDao = new QuestionDaoCsv(locationService);
+            questionDao = new QuestionDaoCsv(questionsConfig);
             assertEquals(ArrayList.class, questionDao.getAllQuestions().getClass());
             assertEquals(Question.class, questionDao.getAllQuestions().get(0).getClass());
         }
 
         @Test
         void shouldReturnFiveQuestionsWhenCallGetAllQuestionsWithRightFilePath() {
-            questionDao = new QuestionDaoCsv(locationService);
+            questionDao = new QuestionDaoCsv(questionsConfig);
             assertEquals(5, questionDao.getAllQuestions().size());
         }
         @Test
         void shouldThrowQuestionReadingExceptionWhenCallGetAllQuestionsWithWrongFilePath(){
-            given(locationService.getFilePath()).willReturn(WRONG_LOCATION);
-            questionDao = new QuestionDaoCsv(locationService);
+            given(questionsConfig.getFilePath()).willReturn(WRONG_LOCATION);
+            questionDao = new QuestionDaoCsv(questionsConfig);
 
             Throwable throwable = assertThrows(Throwable.class,
                     () -> questionDao.getAllQuestions());

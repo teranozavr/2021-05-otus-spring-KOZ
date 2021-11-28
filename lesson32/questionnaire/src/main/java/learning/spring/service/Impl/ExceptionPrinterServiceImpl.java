@@ -27,6 +27,6 @@ public class ExceptionPrinterServiceImpl implements ExceptionPrinterService {
             ioService.out(messageService.getMessage("answerProcessingException"));
             return;
         }
-        ioService.out("unexpectedException");
+        ioService.out("unexpectedException " + " Class: " + e.getClass() + " Message: " + e.getMessage() + " Cause: "+ e.getCause());
     }
 }

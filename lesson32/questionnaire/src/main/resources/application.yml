@@ -6,5 +6,8 @@ questions:
     path: data/
     template: questions
     extension: csv
+locale:
+  lang: ru
+  country: RU
 right:
   count: 3
