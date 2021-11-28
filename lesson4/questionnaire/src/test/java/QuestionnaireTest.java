@@ -1,5 +1,7 @@
 import learning.spring.Questionnaire;
 import learning.spring.config.LocaleConfig;
+import learning.spring.config.QuestionsConfig;
+import learning.spring.dao.QuestionDaoCsv;
 import learning.spring.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,13 +26,18 @@ public class QuestionnaireTest {
     @Autowired
     MessageService messageService;
 
+    @Autowired
+    QuestionsConfig questionsConfig;
+
+    @MockBean
+    QuestionDaoCsv questionDaoCsv;
+
     @MockBean
     LocaleConfig localeConfig;
 
     @BeforeEach
     void init() {
         openMocks(this);
-        ReflectionTestUtils.setField(messageService, "messageSource", messageSource);
     }
 
     @Test
