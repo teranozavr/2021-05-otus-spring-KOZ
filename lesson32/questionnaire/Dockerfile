@@ -1,6 +1,6 @@
 FROM maven:3.5.4-jdk-11
 
-ENV PROJECT_DIR=/Users/a19077136/questionnaire
+ENV PROJECT_DIR=/opt/questionnaire
 
 RUN mkdir -p $PROJECT_DIR
 
@@ -17,7 +17,7 @@ RUN mvn install
 
 FROM openjdk:11-jre-slim
 
-ENV PROJECT_DIR=/Users/a19077136/questionnaire
+ENV PROJECT_DIR=/opt/questionnaire
 
 RUN mkdir -p $PROJECT_DIR
 
