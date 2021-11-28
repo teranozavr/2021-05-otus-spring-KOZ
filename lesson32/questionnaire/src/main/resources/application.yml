@@ -12,8 +12,10 @@ locale:
 right:
   count: 3
 
-datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:54321/postgres
-    username: user
-    password: password
+  datasource:
+      driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:54321/postgres
+      username: user
+      password: password
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
