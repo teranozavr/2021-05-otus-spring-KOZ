@@ -1,24 +1,30 @@
-import learning.spring.Questionnaire;
+package learning.spring.questionnaire;
+
+import learning.spring.commands.Commands;
 import learning.spring.config.LocaleConfig;
 import learning.spring.config.QuestionsConfig;
 import learning.spring.dao.QuestionDaoCsv;
+import learning.spring.service.Impl.ExamServiceImpl;
+import learning.spring.service.Impl.QuestionServiceImpl;
 import learning.spring.service.MessageService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
+import org.springframework.shell.Shell;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.MockitoAnnotations.openMocks;
 
-@SpringBootTest(classes = Questionnaire.class)
+@SpringBootTest
 public class QuestionnaireTest {
+
+    @Autowired
+    private QuestionDaoCsv questionDao;
 
     @Autowired
     MessageSource messageSource;
@@ -26,22 +32,26 @@ public class QuestionnaireTest {
     @Autowired
     MessageService messageService;
 
-    @Autowired
-    QuestionsConfig questionsConfig;
-
     @MockBean
-    QuestionDaoCsv questionDaoCsv;
+    QuestionsConfig questionsConfig;
 
     @MockBean
     LocaleConfig localeConfig;
 
-    @BeforeEach
-    void init() {
-        openMocks(this);
-    }
+    @MockBean
+    Commands commands;
+
+    @MockBean
+    ExamServiceImpl examService;
+
+    @MockBean
+    QuestionServiceImpl questionService;
+
+    @MockBean
+    Shell shell;
 
     @Test
-    void shouldGetMessageReurnQuestionsRuRuWhenLocaleIsRu() {
+    void shouldGetMessageReturnQuestionsRuRuWhenLocaleIsRu() {
         assertEquals("Введите ваше имя", messageService.getMessage("insertName"));
     }
 

@@ -1,39 +1,66 @@
 package learning.spring.service;
 
+import learning.spring.commands.Commands;
+import learning.spring.config.QuestionsConfig;
 import learning.spring.dao.QuestionDaoCsv;
 import learning.spring.domain.Answer;
 import learning.spring.domain.Question;
+import learning.spring.service.Impl.ExamServiceImpl;
 import learning.spring.service.Impl.QuestionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.context.MessageSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.shell.Shell;
 
 import java.util.List;
-import java.util.Locale;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+@SpringBootTest
 public class QuestionServiceImplTests {
-    private QuestionServiceImpl questionService;
-    private static final String LOCATION = "questions.csv";
 
-    @Mock
+    @Configuration
+    @ComponentScan(basePackages = "learning.spring.service")
+    static class TestConfiguration {
+    }
+
+    @MockBean
     private QuestionDaoCsv questionDao;
 
-    @Mock
-    private MessageSource messageSource;
+    @MockBean
+    private QuestionsConfig questionsConfig;
+
+    @MockBean
+    private Commands commands;
+
+    @MockBean
+    private ExamServiceImpl examService;
+
+    @Autowired
+    private QuestionServiceImpl questionService;
+
+    @MockBean
+    private Shell shell;
+
+    @MockBean
+    ExceptionPrinterService exceptionPrinterService;
+
+    @MockBean
+    MessagePrintService messagePrintService;
+
+    @MockBean
+    MessageService messageService;
 
     @BeforeEach
     public void init() {
         openMocks(this);
-        when(questionDao.getAllQuestions()).thenReturn(getAllQuestions());
-        when(messageSource.getMessage(anyString(), any(), any(Locale.class))).thenReturn(LOCATION);
-        questionService = new QuestionServiceImpl(questionDao);
+        given(questionDao.getAllQuestions()).willReturn(getAllQuestions());
     }
 
     @Test
