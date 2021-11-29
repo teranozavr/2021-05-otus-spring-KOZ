@@ -6,26 +6,31 @@ import learning.spring.domain.Question;
 import learning.spring.exceptions.QuestionReadingException;
 import learning.spring.service.Impl.ExamServiceImpl;
 import learning.spring.service.Impl.QuestionServiceImpl;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.shell.Shell;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 @SpringBootTest
 public class QuestionDaoCsvTests {
+
+    private static final String LOCATION = "questions.csv";
+    private static final String WRONG_LOCATION = "wrong.csv";
 
     @Autowired
     private QuestionDaoCsv questionDao;
 
     @Autowired
-    private QuestionDaoCsv questionDaoWrongLocation;
-
-    @MockBean
     private QuestionsConfig questionsConfig;
 
     @MockBean
@@ -39,6 +44,16 @@ public class QuestionDaoCsvTests {
 
     @MockBean
     private Shell shell;
+
+    @BeforeEach
+    void init() {
+        openMocks(this);
+    }
+
+    @AfterEach
+    void reset(){
+        ReflectionTestUtils.setField(questionDao, "location", LOCATION);
+    }
 
     @Nested
     class GetAllQuestionsTests {
@@ -55,9 +70,10 @@ public class QuestionDaoCsvTests {
 
         @Test
         void shouldThrowQuestionReadingExceptionWhenCallGetAllQuestionsWithWrongFilePath(){
+            ReflectionTestUtils.setField(questionDao, "location", WRONG_LOCATION);
 
             Throwable throwable = assertThrows(Throwable.class,
-                    () -> questionDaoWrongLocation.getAllQuestions());
+                    () -> questionDao.getAllQuestions());
 
             assertEquals(QuestionReadingException.class, throwable.getClass());
         }

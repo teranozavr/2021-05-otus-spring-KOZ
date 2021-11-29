@@ -4,6 +4,8 @@ spring:
   shell:
     interactive:
       enabled: false
+  main:
+    allow-bean-definition-overriding: true
 questions:
   file:
     path: data/
