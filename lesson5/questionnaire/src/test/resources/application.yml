@@ -1,6 +1,9 @@
 spring:
   messages:
     basename: locale/message
+  shell:
+    interactive:
+      enabled: false
 questions:
   file:
     path: data/
