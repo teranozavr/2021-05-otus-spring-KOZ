@@ -1,0 +1,13 @@
+spring:
+  messages:
+    basename: locale/message
+questions:
+  file:
+    path: data/
+    template: questions
+    extension: csv
+locale:
+  lang: ru
+  country: RU
+right:
+  count: 3
