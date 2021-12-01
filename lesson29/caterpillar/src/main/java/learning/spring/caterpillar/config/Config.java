@@ -1,5 +1,6 @@
 package learning.spring.caterpillar.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.PublishSubscribeChannel;
@@ -10,8 +11,13 @@ import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
 
+import java.util.concurrent.ForkJoinPool;
+
 @Configuration
-public class Сonfig {
+public class Config {
+
+    private static final String BEAN_NAME = "transformationService";
+    private static final String METHOD_NAME = "transformation";
 
     @Bean
     public QueueChannel caterpillarChannel() {
@@ -19,6 +25,7 @@ public class Сonfig {
     }
 
     @Bean
+
     public PublishSubscribeChannel butterflyChannel() {
         return MessageChannels.publishSubscribe().get();
     }
@@ -29,12 +36,18 @@ public class Сonfig {
     }
 
     @Bean
-    public IntegrationFlow cafeFlow() {
-        return IntegrationFlows.from( "caterpillarChannel" )
+    public IntegrationFlow caterpillarToButterflyFlow(QueueChannel queueChannel, @Qualifier("butterflyChannel") PublishSubscribeChannel publishSubscribeChannel) {
+
+        return IntegrationFlows.from(queueChannel.getBeanName())
                 .split()
-                .handle( "transformationService", "transformation" )
+                .handle(BEAN_NAME, METHOD_NAME)
                 .aggregate()
-                .channel( "butterflyChannel" )
+                .channel(publishSubscribeChannel.getBeanName())
                 .get();
+    }
+
+    @Bean
+    public ForkJoinPool forkJoinPool(){
+        return ForkJoinPool.commonPool();
     }
 }
