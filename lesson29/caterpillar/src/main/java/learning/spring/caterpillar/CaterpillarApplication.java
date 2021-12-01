@@ -39,8 +39,8 @@ public class CaterpillarApplication {
 				System.out.println( "Гусеницы: " +
 						items.stream().map( Caterpillar::getName )
 								.collect( Collectors.joining( "," ) ) );
-				Collection<Butterfly> food = caterpillarGateway.process( items );
-				System.out.println( "Бабочки: " + food.stream()
+				Collection<Butterfly> butterflies = caterpillarGateway.process( items );
+				System.out.println( "Бабочки: " + butterflies.stream()
 						.map( Butterfly::getName )
 						.collect( Collectors.joining( "," ) ) );
 			} );

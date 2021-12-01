@@ -11,7 +11,7 @@ import org.springframework.integration.dsl.Pollers;
 import org.springframework.integration.scheduling.PollerMetadata;
 
 @Configuration
-public class config {
+public class Сonfig {
 
     @Bean
     public QueueChannel caterpillarChannel() {
